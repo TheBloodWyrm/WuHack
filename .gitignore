@@ -58,5 +58,10 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 /WuHack/nbproject/private/
+<<<<<<< HEAD
 /WuHack/build/
 /WuHack/dist/
+=======
+/WuHack/dist/
+/WuHack/build/
+>>>>>>> origin/master
