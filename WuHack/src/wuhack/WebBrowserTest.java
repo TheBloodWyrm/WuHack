@@ -6,22 +6,13 @@
 package wuhack;
 
 import java.net.Authenticator;
-import java.net.PasswordAuthentication;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import javax.swing.text.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.html.HTMLFormElement;
-import org.w3c.dom.html.HTMLInputElement;
 
 /**
  *
@@ -33,9 +24,6 @@ public class WebBrowserTest extends Application
   @Override
   public void start(Stage primaryStage)
   {
-    final String user = "baujuc12";
-    final String pass = "fwpts5fz";
-
     StackPane root = new StackPane();
 
     WebView browser = new WebView();
