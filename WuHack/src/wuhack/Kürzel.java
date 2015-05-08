@@ -11,5 +11,5 @@ package wuhack;
  */
 public enum Kürzel
 {
-  PO, WU, ED;
+  PO, WU, ED, VO, WL, GU, SL, PR, HY
 }

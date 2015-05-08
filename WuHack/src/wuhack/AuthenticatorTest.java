@@ -14,13 +14,18 @@ import java.net.PasswordAuthentication;
  */
 public class AuthenticatorTest extends Authenticator
 {
-  String user = "baujuc12";
-  String password = "fwpts5fz";
+  String user;
+  char[] password;
 
+  public AuthenticatorTest(String user, char[] password) {
+      this.user = user;
+      this.password = password;
+  }
+  
   @Override
   protected PasswordAuthentication getPasswordAuthentication()
   {
-    return new PasswordAuthentication(user, password.toCharArray());
+    return new PasswordAuthentication(user, password);
   } 
   
 }

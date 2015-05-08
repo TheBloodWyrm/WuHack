@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<TitledPane collapsible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="120.0" minWidth="200.0" prefHeight="170.0" prefWidth="400.0" text="Authentication" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <GridPane prefHeight="160.0" prefWidth="326.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="50.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="200.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Username" />
+            <Label text="Password" GridPane.rowIndex="1" />
+            <TextField fx:id="tfUsername" promptText="User" GridPane.columnIndex="1" />
+            <PasswordField fx:id="pfPassword" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="185.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+               <children>
+                  <Button fx:id="btAuth" mnemonicParsing="false" prefWidth="100.0" text="Authenticate" textAlignment="CENTER">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btCancel" mnemonicParsing="false" prefWidth="100.0" text="Cancel" textAlignment="CENTER">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </HBox>
+         </children>
+      </GridPane>
+   </content>
+</TitledPane>
