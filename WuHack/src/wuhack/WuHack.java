@@ -24,7 +24,7 @@ public class WuHack extends Application
     Parent root = FXMLLoader.load(getClass().getResource("FXMLGUI.fxml"));
     
     Scene scene = new Scene(root);
-    
+    stage.setTitle("WuHack");
     stage.setScene(scene);
     stage.show();
   }
