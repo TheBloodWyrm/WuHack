@@ -57,6 +57,7 @@ public class FXMLPopupController implements Initializable {
     private void onCancel(ActionEvent e) {
         isReady = false;
         ((Popup) btAuth.getScene().getWindow()).hide();
+        System.exit(0);
     }
     
     /**

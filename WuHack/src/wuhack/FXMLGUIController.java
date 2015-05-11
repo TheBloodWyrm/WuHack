@@ -38,15 +38,7 @@ public class FXMLGUIController implements Initializable
   {
     cbLehrer.getItems().addAll(kürzel.values());
     cbLehrer.setPromptText("Lehrer Kürzel");   
-    cbLehrer.valueProperty().addListener(new ChangeListener<String>() {
-      @Override
-      public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
-      {
-        System.out.println(observable);
-        System.out.println(oldValue);
-        System.out.println(newValue);
-      }
-    });
+    
   }
   
 }
