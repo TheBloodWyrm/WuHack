@@ -14,30 +14,28 @@ import java.time.LocalDate;
  */
 public class Lesson {
     
-    private String teacher;
+    private Kürzel[] teachers;
     private String subject;
-    private String classroom;
+    private String[] classrooms;
     private int hour;
     private int Week;
     private WeekDay weekDay;
-    private LocalDate day;
 
-    public Lesson(String teacher, String subject, String classroom, int hour, int Week, WeekDay weekDay, LocalDate day) {
-        this.teacher = teacher;
+    public Lesson(Kürzel[] teachers, String subject, String[] classrooms, int hour, int Week, WeekDay weekDay) {
+        this.teachers = teachers;
         this.subject = subject;
-        this.classroom = classroom;
+        this.classrooms = classrooms;
         this.hour = hour;
         this.Week = Week;
         this.weekDay = weekDay;
-        this.day = day;
     }
 
-    public String getTeacher() {
-        return teacher;
+    public Kürzel[] getTeacher() {
+        return teachers;
     }
 
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
+    public void setTeacher(Kürzel[] teacher) {
+        this.teachers = teacher;
     }
 
     public String getSubject() {
@@ -48,12 +46,12 @@ public class Lesson {
         this.subject = subject;
     }
 
-    public String getClassroom() {
-        return classroom;
+    public String[] getClassroom() {
+        return classrooms;
     }
 
-    public void setClassroom(String classroom) {
-        this.classroom = classroom;
+    public void setClassroom(String[] classroom) {
+        this.classrooms = classroom;
     }
 
     public int getHour() {
@@ -79,12 +77,4 @@ public class Lesson {
     public void setWeekDay(WeekDay weekDay) {
         this.weekDay = weekDay;
     }
-
-    public LocalDate getDay() {
-        return day;
-    }
-
-    public void setDay(LocalDate day) {
-        this.day = day;
-    }  
 }

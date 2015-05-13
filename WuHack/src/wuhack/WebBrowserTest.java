@@ -7,8 +7,8 @@ package wuhack;
 
 import java.io.IOException;
 import java.net.Authenticator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.beans.value.ChangeListener;
@@ -19,7 +19,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebView;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -31,6 +30,8 @@ import javafx.stage.WindowEvent;
  */
 public class WebBrowserTest extends Application {
 
+  private Lesson[][] schedule;
+  
     @Override
     public void start(Stage primaryStage) {
         StackPane root = new StackPane();
@@ -51,7 +52,8 @@ public class WebBrowserTest extends Application {
                 System.out.println(newValue);
                 if(newValue == Worker.State.SUCCEEDED) {
                     ScheduleModel m = new ScheduleModel();
-                    m.analyzeDoc(webEngine.documentProperty().get());
+                    schedule = m.analyzeDoc(webEngine.documentProperty().get(), getCalendarWeek());
+                    printSchedule();
                 }
             }
         });
@@ -81,6 +83,20 @@ public class WebBrowserTest extends Application {
         
         
         
+    }
+    
+    private int getCalendarWeek()
+    {
+      Calendar cal = Calendar.getInstance();
+      cal.setTimeInMillis(System.currentTimeMillis());
+      int week = cal.get(Calendar.WEEK_OF_YEAR);
+      
+      return week;
+    }
+    
+    private void printSchedule()
+    {
+      
     }
 
     public static void main(String[] args) {
