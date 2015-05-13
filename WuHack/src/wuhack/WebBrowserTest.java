@@ -96,7 +96,10 @@ public class WebBrowserTest extends Application {
     
     private void printSchedule()
     {
-      
+      for(int i = 0; i < 5; i++)
+      {
+        System.out.print(String.format("%1$15s", WeekDay.values()[i]));
+      }
     }
 
     public static void main(String[] args) {
