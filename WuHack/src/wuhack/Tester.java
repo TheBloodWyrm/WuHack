@@ -13,6 +13,9 @@ public class Tester
 {
   public static void main(String[] args)
   {
-    System.out.println(Kürzel.valueOf("adsf"));
+    int[][] ints = new int[1][2];
+    System.out.println(ints.length);
+    
+    System.out.println();
   }
 }

@@ -30,11 +30,11 @@ public class Lesson {
         this.weekDay = weekDay;
     }
 
-    public Kürzel[] getTeacher() {
+    public Kürzel[] getTeachers() {
         return teachers;
     }
 
-    public void setTeacher(Kürzel[] teacher) {
+    public void setTeachers(Kürzel[] teacher) {
         this.teachers = teacher;
     }
 
@@ -46,11 +46,11 @@ public class Lesson {
         this.subject = subject;
     }
 
-    public String[] getClassroom() {
+    public String[] getClassrooms() {
         return classrooms;
     }
 
-    public void setClassroom(String[] classroom) {
+    public void setClassrooms(String[] classroom) {
         this.classrooms = classroom;
     }
 
