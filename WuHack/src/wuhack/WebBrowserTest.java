@@ -61,6 +61,10 @@ public class WebBrowserTest extends Application {
             System.out.println(ex.getMessage());
         }
         auth.show(primaryStage);
+        
+        ScheduleModel m = new ScheduleModel();
+        m.analyzeDoc(webEngine.documentProperty().get());
+        
     }
 
     public static void main(String[] args) {
