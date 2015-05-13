@@ -11,6 +11,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -41,6 +44,18 @@ public class WebBrowserTest extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         
+        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+                System.out.println(newValue);
+                if(newValue == Worker.State.SUCCEEDED) {
+                    ScheduleModel m = new ScheduleModel();
+                    m.analyzeDoc(webEngine.documentProperty().get());
+                }
+            }
+        });
+        
         // Popup führt Anmeldung durch
         FXMLPopupController pop = new FXMLPopupController();
         FXMLLoader l = new FXMLLoader(WebBrowserTest.class.getResource("FXMLPopup.fxml"));
@@ -53,6 +68,7 @@ public class WebBrowserTest extends Application {
                 System.out.println(""+pop.isReady());
                 Authenticator.setDefault(new AuthenticatorTest(pop.getUserName(), pop.getPasswword()));
                 webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/20/c/c00001.htm");
+                
             }
         });
         try {
@@ -62,8 +78,8 @@ public class WebBrowserTest extends Application {
         }
         auth.show(primaryStage);
         
-        ScheduleModel m = new ScheduleModel();
-        m.analyzeDoc(webEngine.documentProperty().get());
+        
+        
         
     }
 
