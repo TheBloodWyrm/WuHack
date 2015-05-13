@@ -18,17 +18,15 @@ public class Lesson {
     private String subject;
     private String classroom;
     private int hour;
-    private String weekRange;
     private int Week;
     private WeekDay weekDay;
     private LocalDate day;
 
-    public Lesson(String teacher, String subject, String classroom, int hour, String weekRange, int Week, WeekDay weekDay, LocalDate day) {
+    public Lesson(String teacher, String subject, String classroom, int hour, int Week, WeekDay weekDay, LocalDate day) {
         this.teacher = teacher;
         this.subject = subject;
         this.classroom = classroom;
         this.hour = hour;
-        this.weekRange = weekRange;
         this.Week = Week;
         this.weekDay = weekDay;
         this.day = day;
@@ -64,14 +62,6 @@ public class Lesson {
 
     public void setHour(int hour) {
         this.hour = hour;
-    }
-
-    public String getWeekRange() {
-        return weekRange;
-    }
-
-    public void setWeekRange(String weekRange) {
-        this.weekRange = weekRange;
     }
 
     public int getWeek() {
