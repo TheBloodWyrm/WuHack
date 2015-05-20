@@ -32,6 +32,16 @@ public class Lesson {
         this.weekDay = weekDay;
     }
 
+  public String getKlasse()
+  {
+    return klasse;
+  }
+
+  public void setKlasse(String klasse)
+  {
+    this.klasse = klasse;
+  }
+
     public Kürzel[] getTeachers() {
         return teachers;
     }
