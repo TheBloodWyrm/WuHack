@@ -44,9 +44,9 @@ public class FXMLGUIController implements Initializable
   public void onCheckBox() throws Exception{
     WebEngine webEngine = wv.getEngine();
     for(int i = 1; i < 32; i++){
-    url = new URL("https://supplierplan.htl-kaindorf.at/supp_neu/20/c/c0000" + i + ".htm");
+    url = new URL("https://supplierplan.htl-kaindorf.at/supp_neu/21/c/c0000" + i + ".htm");
     ScheduleModel m = new ScheduleModel();
-    m.analyzeDoc(webEngine.documentProperty().get());
+    m.analyzeDoc(webEngine.documentProperty().get(), 21, i);
     System.out.println(url);
     }
     
@@ -59,7 +59,7 @@ public class FXMLGUIController implements Initializable
     in.close();
     
     
-    webEngine.load(url);
+    webEngine.load(url.toString());
   }
   
   
