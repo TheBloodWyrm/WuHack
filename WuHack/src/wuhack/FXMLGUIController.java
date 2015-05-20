@@ -6,7 +6,14 @@
 package wuhack;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Handler;
@@ -23,6 +30,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
 
 /**
  *
@@ -30,44 +43,77 @@ import javafx.scene.web.WebView;
  */
 public class FXMLGUIController implements Initializable
 {
-  
+
   @FXML
   private ComboBox cbLehrer;
   @FXML
   private TextArea taConsole;
   @FXML
   private WebView wv;
-  
+
   private Kürzel kürzel;
   public URL url;
-  
-  public void onCheckBox() throws Exception{
-    WebEngine webEngine = wv.getEngine();
-    for(int i = 1; i < 32; i++){
-    url = new URL("https://supplierplan.htl-kaindorf.at/supp_neu/21/c/c0000" + i + ".htm");
-    ScheduleModel m = new ScheduleModel();
-    m.analyzeDoc(webEngine.documentProperty().get(), 21, i);
-    System.out.println(url);
-    }
-    
-    BufferedReader in = new BufferedReader(
-    new InputStreamReader(url.openStream()));
+  private BufferedWriter writer;
 
-    String inputLine;
-    while ((inputLine = in.readLine()) != null)
-      System.out.println(inputLine);
-    in.close();
-    
-    
-    webEngine.load(url.toString());
+  public void onCheckBox() throws Exception
+  {
+//    WebEngine webEngine = wv.getEngine();
+//    for (int i = 1; i < 5; i++)
+//    {
+//      webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/21/c/c0000" + i + ".htm");
+//      try
+//      {
+//    //PrintWriter out = new PrintWriter("file"+i+".txt");
+//        //out.println(webEngine.documentProperty().get());
+//        writer = new BufferedWriter(new FileWriter("file" + i + ".txt"));
+//        writer.write(convertDoc(webEngine.documentProperty().get()));
+//      } catch (Exception e)
+//      {
+//        System.out.println(e.getMessage());
+//        System.out.println(e.getCause());
+//        System.out.println("Verdammt");
+//      }
+//      finally
+//      {
+//        try
+//        {
+//          if (writer != null)
+//          {
+//            writer.close();
+//          }
+//        } catch (IOException e)
+//        {
+//          System.out.println("Nochmal Verdammt");
+//        }
+//      }
+//    }
+        for(int i = 1; ;i++){
+        String formatted = String.format("%02d", i);
+        URL findurl = new URL("https://supplierplan.htl-kaindorf.at/supp_neu/21/c/c000" + formatted + ".htm");
+        BufferedReader in = new BufferedReader(
+        new InputStreamReader(findurl.openStream()));
+        BufferedWriter docwriter = new BufferedWriter(new FileWriter("outputfile" + formatted + ".txt"));
+
+        String inputLine;
+        while ((inputLine = in.readLine()) != null){
+            try{
+                docwriter.write(inputLine);
+            }
+            catch(IOException e){
+                e.printStackTrace();
+                return;
+            }
+        }
+        in.close();
+        docwriter.close();
+        }
   }
-  
-  
+
   @Override
   public void initialize(URL url, ResourceBundle rb)
   {
     cbLehrer.getItems().addAll(kürzel.values());
-    cbLehrer.setPromptText("Lehrer Kürzel");   
+    cbLehrer.setPromptText("Lehrer Kürzel");
     cbLehrer.setOnAction(new EventHandler()
     {
 
@@ -84,5 +130,7 @@ public class FXMLGUIController implements Initializable
       }
     });
   }
-  
+
+
+
 }
