@@ -17,7 +17,7 @@ public enum WeekDay {
   public String toString()
   {
     String s = "???";
-    String myenum = this.toString();
+    String myenum = this.name();
     
     s = myenum.charAt(0) + myenum.substring(1, myenum.length()-1).toLowerCase();
     
