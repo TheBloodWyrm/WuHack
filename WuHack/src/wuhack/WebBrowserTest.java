@@ -30,7 +30,7 @@ import javafx.stage.WindowEvent;
 public class WebBrowserTest extends Application
 {
   private Lesson[][] schedule;
-  private Lesson[][][] timetable = new Lesson[31][12][12];
+  private Lesson[][][] timetable = new Lesson[32][12][12];
   private int counter = 1;
   private WebEngine webEngine;
   

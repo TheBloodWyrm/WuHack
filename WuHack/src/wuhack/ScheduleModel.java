@@ -113,7 +113,8 @@ public class ScheduleModel
                 
                 
                 System.out.println(" " + removeSigns(inCells.item(0).getTextContent().trim()) + " - - - " + classroom);
-                teachers.add(Kürzel.valueOf(inCells.item(0).getTextContent().trim()));
+                String kuerzel = inCells.item(0).getTextContent().trim().replace("---", "NIEMAND");
+                teachers.add(Kürzel.valueOf(kuerzel));
                 classrooms.add(classroom);
               }
             }
