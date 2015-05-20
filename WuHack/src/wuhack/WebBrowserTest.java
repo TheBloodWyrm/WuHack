@@ -30,14 +30,17 @@ import javafx.stage.WindowEvent;
 public class WebBrowserTest extends Application
 {
   private Lesson[][] schedule;
-
+  private Lesson[][][] timetable = new Lesson[31][12][12];
+  private int counter = 1;
+  private WebEngine webEngine;
+  
   @Override
   public void start(Stage primaryStage)
   {
     StackPane root = new StackPane();
 
     WebView browser = new WebView();
-    WebEngine webEngine = browser.getEngine();
+    webEngine = browser.getEngine();
     root.getChildren().add(browser);
     Scene scene = new Scene(root, 300, 250);
 
@@ -57,10 +60,21 @@ public class WebBrowserTest extends Application
           ScheduleModel m = new ScheduleModel();
           schedule = m.analyzeDoc(webEngine.documentProperty().get(), getCalendarWeek(), Integer.parseInt("00001"));
           printSchedule();
+          
+            System.out.println("Teachers");
+          timetable[counter-1] = schedule;
+          schedule = m.getTeacherLessons(Kürzel.RI, timetable);
+          printSchedule();
+          
+            System.out.println("Counter: "+counter);
+          if(counter <= 31)
+            loadNext();
         }
       }
     });
 
+    
+    
     // Popup führt Anmeldung durch
     FXMLPopupController pop = new FXMLPopupController();
     FXMLLoader l = new FXMLLoader(WebBrowserTest.class.getResource("FXMLPopup.fxml"));
@@ -74,8 +88,8 @@ public class WebBrowserTest extends Application
       {
         System.out.println("" + pop.isReady());
         Authenticator.setDefault(new AuthenticatorTest(pop.getUserName(), pop.getPasswword()));
-        webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/21/c/c00001.htm");
-
+        //webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/21/c/c00001.htm");
+          loadNext();
       }
     });
     try
@@ -90,6 +104,11 @@ public class WebBrowserTest extends Application
 
   }
 
+  private void loadNext() {
+      webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/"+getCalendarWeek()+"/c/c"+String.format("%05d", counter)+".htm");
+      counter++;
+  }
+  
   private int getCalendarWeek()
   {
     Calendar cal = Calendar.getInstance();

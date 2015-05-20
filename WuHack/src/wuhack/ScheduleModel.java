@@ -174,7 +174,7 @@ public class ScheduleModel
               for (int k = 0; k < le[i][j].length; k++) {
                   Lesson l = le[i][j][k];
                   
-                  if(containsKürzel(l.getTeachers(), ku)) {
+                  if(l != null && containsKürzel(l.getTeachers(), ku)) {
                       int day = l.getWeekDay().ordinal();
                       int hour = l.getHour()-1;
                       
