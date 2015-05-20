@@ -157,4 +157,37 @@ public class ScheduleModel
 
     return array;
   }
+  
+  public Lesson[][] getTeacherLessons(Kürzel ku, Lesson[][][] le) {
+      Lesson[][] table = new Lesson[12][12];
+      
+      for (int i = 0; i < le.length; i++) {
+          for (int j = 0; j < le[i].length; j++) {
+              for (int k = 0; k < le[i][j].length; k++) {
+                  Lesson l = le[i][j][k];
+                  
+                  if(containsKürzel(l.getTeachers(), ku)) {
+                      int day = l.getWeekDay().ordinal();
+                      int hour = l.getHour()-1;
+                      
+                      table[day][hour] = l;
+                  }
+              }
+          }
+      }
+      
+      return table;
+  }
+  
+  private boolean containsKürzel(Kürzel[] a, Kürzel k) {
+      boolean b = false;
+      
+      for (int i = 0; i < a.length; i++) {
+          if(a[i].equals(k)) {
+              b = true;
+          }
+      }
+      
+      return b;
+  }
 }
