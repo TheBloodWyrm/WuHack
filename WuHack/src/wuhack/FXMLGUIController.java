@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -57,26 +58,42 @@ public class FXMLGUIController implements Initializable
 
   public void onCheckBox() throws Exception
   {
-        for(int i = 1; ;i++){
+    for (int j = 0; j < 2; j++)
+    {
+      int z = 0;
+      String format = null;
+      if(j == 0){
+        z = getCalendarWeek();
+        format = String.format("%02d", z);
+      }
+      else{
+        z = getCalendarWeek() +1;
+        format = String.format("%02d", z);
+      }
+      for (int i = 1;; i++)
+      {
         String formatted = String.format("%02d", i);
-        URL findurl = new URL("https://supplierplan.htl-kaindorf.at/supp_neu/21/c/c000" + formatted + ".htm");
+        URL findurl = new URL("https://supplierplan.htl-kaindorf.at/supp_neu/"+ format + "/c/c000" + formatted + ".htm");
         BufferedReader in = new BufferedReader(
-        new InputStreamReader(findurl.openStream()));
-        BufferedWriter docwriter = new BufferedWriter(new FileWriter("outputfile" + formatted + ".txt"));
+                new InputStreamReader(findurl.openStream()));
+        BufferedWriter docwriter = new BufferedWriter(new FileWriter(format + "outputfile" + formatted + ".txt"));
 
         String inputLine;
-        while ((inputLine = in.readLine()) != null){
-            try{
-                docwriter.write(inputLine);
-            }
-            catch(IOException e){
-                e.printStackTrace();
-                return;
-            }
+        while ((inputLine = in.readLine()) != null)
+        {
+          try
+          {
+            docwriter.write(inputLine);
+          } catch (IOException e)
+          {
+            e.printStackTrace();
+            return;
+          }
         }
         in.close();
         docwriter.close();
-        }
+      }
+    }
   }
 
   @Override
@@ -101,6 +118,13 @@ public class FXMLGUIController implements Initializable
     });
   }
 
+  private int getCalendarWeek()
+  {
+    Calendar cal = Calendar.getInstance();
+    cal.setTimeInMillis(System.currentTimeMillis());
+    int week = cal.get(Calendar.WEEK_OF_YEAR);
 
+    return week;
+  }
 
 }
