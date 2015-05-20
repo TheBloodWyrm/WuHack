@@ -11,5 +11,18 @@ package wuhack;
  * @author Julian
  */
 public enum WeekDay {
-    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY
+    MONTAG, DIENSTAG, MITTWOCH, DONNERSTAG, FREITAG;
+    
+  @Override    
+  public String toString()
+  {
+    String s = "???";
+    String myenum = this.toString();
+    
+    
+    s = myenum.charAt(0) + myenum.substring(1, myenum.length()-1).toLowerCase();
+    
+    
+    return s;
+  }
 }
