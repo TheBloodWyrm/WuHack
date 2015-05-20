@@ -41,6 +41,7 @@ public class ScheduleModel
     HTMLFontElement f = (HTMLFontElement) d.getElementsByTagName("font").item(1);
 
     System.out.println("FontText: " + f.getTextContent());
+    String klasse = f.getTextContent();
 
 //    for (int i = 0; i < centerChilds.getLength(); i++)
 //    {
@@ -55,13 +56,15 @@ public class ScheduleModel
 
     for (int i = 1; i < rows.getLength(); i = i + 2)
     {
+      int doneCells = 0;
+      
       HTMLTableRowElement row = (HTMLTableRowElement) rows.item(i);
 
       HTMLCollection cells = row.getCells();
 
       for (int j = 1; j < cells.getLength(); j++)
       {
-        if (schedule[j - 1][((i - 1) / 2)] == null)
+        if (schedule[j - 1 + doneCells][((i - 1) / 2)] == null)
         {
           System.out.println("Lesson:");
           LinkedList<Kürzel> teachers = new LinkedList<>();
@@ -75,16 +78,10 @@ public class ScheduleModel
           hour = (i - 1) / 2 + 1;
 
           HTMLTableCellElement cell = (HTMLTableCellElement) cells.item(j);
-//        System.out.println("--------");
-//        System.out.println("Index: " + i + " " + j
-//                + " " + "rowspan: " + cell.getAttribute("rowspan")
-//                + " colspan: " + cell.getAttribute("colspan")
-//                + "~~~~~~~~~~\n" + cell.getTextContent());
 
           HTMLTableElement inTable = (HTMLTableElement) cell.getChildNodes().item(0);
           HTMLCollection inRows = inTable.getRows();
-
-    //  subject = ((HTMLTableRowElement)inRows.item(0)).getCells().item(0).getTextContent().trim();
+          
           for (int k = 0; k < inRows.getLength(); k++)
           {
             HTMLTableRowElement inRow = (HTMLTableRowElement) inRows.item(k);
@@ -97,7 +94,7 @@ public class ScheduleModel
             }
             else
             {
-              if (inCells.item(0).getTextContent().trim().length() > 2)
+              if (inCells.item(0).getTextContent().trim().length() > 3)
               {
                 // TODO!! (derweil wird nur gelöscht)
                 isLesson = false;
@@ -106,18 +103,27 @@ public class ScheduleModel
               }
               else
               {
-                System.out.println(" " + inCells.item(0).getTextContent().trim() + " - - - " + inCells.item(1).getTextContent().trim());
+                String classroom;
+                
+                if(inCells.getLength() == 1)
+                  classroom = "???";
+                else
+                  classroom = inCells.item(1).getTextContent().trim();
+                
+                
+                
+                System.out.println(" " + removeSigns(inCells.item(0).getTextContent().trim()) + " - - - " + classroom);
                 teachers.add(Kürzel.valueOf(inCells.item(0).getTextContent().trim()));
-                classrooms.add(inCells.item(1).getTextContent().trim());
+                classrooms.add(classroom);
               }
             }
           }
 
           for (int k = 0; k < (Integer.parseInt(cell.getAttribute("rowspan")) / 2); k++)
           {
-            if (isLesson && schedule[j - 1][((i - 1) / 2) + k] == null)
+            if (isLesson && schedule[j - 1 + doneCells][((i - 1) / 2) + k] == null)
             {
-              Lesson l = new Lesson(convertTeachers(teachers), subject, convertClassrooms(classrooms), hour + k, calweek, weekday);
+              Lesson l = new Lesson(convertTeachers(teachers), subject, klasse, convertClassrooms(classrooms), hour + k, calweek, weekday);
 
               schedule[j - 1][((i - 1) / 2) + k] = l;
             }
@@ -126,6 +132,8 @@ public class ScheduleModel
         else
         {
           System.out.println("longer lesson!");
+          doneCells++;
+          j--;
         }
       }
 
@@ -189,5 +197,29 @@ public class ScheduleModel
       }
       
       return b;
+      
+  private String removeSigns(String s)
+  {
+    String ret = "";
+    char[] ignorableChars = {'.', ',', '\'', '\"', '!', '?', '§', '$', 
+                             '%', '&', '/', '(', ')', '=', '\\', ']', 
+                             '[', '{', '}', '#', '+', '*', '~'};
+    for (int i : s.chars().toArray())
+    {
+      boolean fits = true;
+      char c = (char) i;
+      
+      for (char ignorableChar : ignorableChars)
+      {
+        if(c == ignorableChar)
+          fits = false;
+      }
+      
+      if(fits)
+        ret += c;
+    }
+    
+    return ret;
+
   }
 }
