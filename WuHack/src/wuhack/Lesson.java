@@ -16,14 +16,16 @@ public class Lesson {
     
     private Kürzel[] teachers;
     private String subject;
+    private String klasse;
     private String[] classrooms;
     private int hour;
     private int Week;
     private WeekDay weekDay;
 
-    public Lesson(Kürzel[] teachers, String subject, String[] classrooms, int hour, int Week, WeekDay weekDay) {
+    public Lesson(Kürzel[] teachers, String subject, String klasse, String[] classrooms, int hour, int Week, WeekDay weekDay) {
         this.teachers = teachers;
         this.subject = subject;
+        this.klasse = klasse;
         this.classrooms = classrooms;
         this.hour = hour;
         this.Week = Week;
