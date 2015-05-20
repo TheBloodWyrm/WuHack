@@ -197,7 +197,8 @@ public class ScheduleModel
       }
       
       return b;
-      
+  }
+  
   private String removeSigns(String s)
   {
     String ret = "";
