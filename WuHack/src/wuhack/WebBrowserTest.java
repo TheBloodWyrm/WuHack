@@ -8,8 +8,6 @@ package wuhack;
 import java.io.IOException;
 import java.net.Authenticator;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.stream.Stream;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.beans.value.ChangeListener;
@@ -31,7 +29,6 @@ import javafx.stage.WindowEvent;
  */
 public class WebBrowserTest extends Application
 {
-
   private Lesson[][] schedule;
 
   @Override
@@ -58,7 +55,7 @@ public class WebBrowserTest extends Application
         if (newValue == Worker.State.SUCCEEDED)
         {
           ScheduleModel m = new ScheduleModel();
-          schedule = m.analyzeDoc(webEngine.documentProperty().get(), getCalendarWeek());
+          schedule = m.analyzeDoc(webEngine.documentProperty().get(), getCalendarWeek(), Integer.parseInt("00001"));
           printSchedule();
         }
       }
@@ -77,7 +74,7 @@ public class WebBrowserTest extends Application
       {
         System.out.println("" + pop.isReady());
         Authenticator.setDefault(new AuthenticatorTest(pop.getUserName(), pop.getPasswword()));
-        webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/20/c/c00001.htm");
+        webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/21/c/c00001.htm");
 
       }
     });
