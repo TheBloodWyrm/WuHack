@@ -5,6 +5,9 @@
  */
 package wuhack;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+
 /**
  *
  * @author Julius
@@ -16,6 +19,8 @@ public class Tester
     int[][] ints = new int[1][2];
     System.out.println(ints.length);
     
-    System.out.println();
+    int wl = LocalDate.now().getDayOfYear()/7+1;
+    int wc = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
+    System.out.println(wl+" "+wc);
   }
 }
