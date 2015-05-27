@@ -4,25 +4,29 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class HTMLModel
 {
-  public static Document convertToHTML(Lesson[][] schedule, boolean klasse) throws IOException
+  public static Document convertToHTML(Lesson[][] schedule, boolean klasse) throws IOException, ParserConfigurationException
   {
-    File file = new File("view.html");
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.newDocument();
     
-    StringBuilder htmltext = new StringBuilder();
+    Element nodecenter = doc.createElement("center");
     
-    if(klasse)
-    {
-      
-    }
     
-    BufferedWriter bw = new BufferedWriter(new FileWriter(file.toString()));
-    bw.write("<html><head><title>" + schedule[0][0].getKlasse() + "</title></head><body><p>This is Body</p></body></html>");
-    bw.close();
     
-    return null;
+    doc.appendChild(nodecenter);
+    
+    System.out.println(doc.toString());
+    
+    
+    return doc;
   }
 }
