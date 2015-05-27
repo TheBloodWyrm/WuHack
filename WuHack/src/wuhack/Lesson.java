@@ -14,7 +14,8 @@ import java.time.LocalDate;
  */
 public class Lesson {
     
-    private Kürzel[] teachers;
+    //private Kürzel[] teachers;
+    private String[] teachers;
     private String subject;
     private String klasse;
     private String[] classrooms;
@@ -23,6 +24,20 @@ public class Lesson {
     private WeekDay weekDay;
 
     public Lesson(Kürzel[] teachers, String subject, String klasse, String[] classrooms, int hour, int Week, WeekDay weekDay) {
+        String[] a = new String[teachers.length];
+        for (int i = 0; i < a.length; i++) {
+            a[i] = teachers[i].name();
+        }
+        this.teachers = a;
+        this.subject = subject;
+        this.klasse = klasse;
+        this.classrooms = classrooms;
+        this.hour = hour;
+        this.Week = Week;
+        this.weekDay = weekDay;
+    }
+    
+    public Lesson(String[] teachers, String subject, String klasse, String[] classrooms, int hour, int Week, WeekDay weekDay) {
         this.teachers = teachers;
         this.subject = subject;
         this.klasse = klasse;
@@ -42,11 +57,11 @@ public class Lesson {
     this.klasse = klasse;
   }
 
-    public Kürzel[] getTeachers() {
+    public String[] getTeachers() {
         return teachers;
     }
 
-    public void setTeachers(Kürzel[] teacher) {
+    public void setTeachers(String[] teacher) {
         this.teachers = teacher;
     }
 

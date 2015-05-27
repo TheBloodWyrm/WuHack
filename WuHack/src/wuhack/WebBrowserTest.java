@@ -30,7 +30,7 @@ import javafx.stage.WindowEvent;
 public class WebBrowserTest extends Application
 {
   private Lesson[][] schedule;
-  private Lesson[][][] timetable = new Lesson[32][12][12];
+  private Lesson[][][] timetable = new Lesson[32][5][12];
   private int counter = 1;
   private WebEngine webEngine;
   
@@ -63,7 +63,7 @@ public class WebBrowserTest extends Application
           
             System.out.println("Teachers");
           timetable[counter-1] = schedule;
-          schedule = m.getTeacherLessons(Kürzel.RI, timetable);
+          schedule = m.getTeacherLessons("RI", timetable);
           printSchedule();
           
             System.out.println("Counter: "+counter);
