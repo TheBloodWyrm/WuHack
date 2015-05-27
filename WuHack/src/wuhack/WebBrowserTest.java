@@ -6,8 +6,11 @@
 package wuhack;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.Authenticator;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.beans.value.ChangeListener;
@@ -22,6 +25,13 @@ import javafx.scene.web.WebView;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
 
 /**
  *
@@ -29,11 +39,12 @@ import javafx.stage.WindowEvent;
  */
 public class WebBrowserTest extends Application
 {
+
   private Lesson[][] schedule;
   private Lesson[][][] timetable = new Lesson[32][5][12];
   private int counter = 1;
   private WebEngine webEngine;
-  
+
   @Override
   public void start(Stage primaryStage)
   {
@@ -60,6 +71,7 @@ public class WebBrowserTest extends Application
           ScheduleModel m = new ScheduleModel();
           schedule = m.analyzeDoc(webEngine.documentProperty().get(), getCalendarWeek(), Integer.parseInt("00001"));
           printSchedule();
+<<<<<<< HEAD
           
             System.out.println("Teachers");
           timetable[counter-1] = schedule;
@@ -69,12 +81,29 @@ public class WebBrowserTest extends Application
             System.out.println("Counter: "+counter);
           if(counter <= 31)
             loadNext();
+=======
+
+          //          System.out.println("Teachers");
+//          timetable[counter-1] = schedule;
+//          schedule = m.getTeacherLessons(Kürzel.RI, timetable);
+//          printSchedule();
+//            System.out.println("Counter: "+counter);
+//          if(counter <= 31)
+//            loadNext();
+          try
+          {
+            webEngine.loadContent(convertToString(HTMLModel.convertToHTML(schedule, "1AHIF", getCalendarWeek())));
+          }
+          catch (Exception ex)
+          {
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getCause());
+          }
+>>>>>>> origin/master
         }
       }
     });
 
-    
-    
     // Popup führt Anmeldung durch
     FXMLPopupController pop = new FXMLPopupController();
     FXMLLoader l = new FXMLLoader(WebBrowserTest.class.getResource("FXMLPopup.fxml"));
@@ -88,8 +117,8 @@ public class WebBrowserTest extends Application
       {
         System.out.println("" + pop.isReady());
         Authenticator.setDefault(new AuthenticatorTest(pop.getUserName(), pop.getPasswword()));
-        //webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/21/c/c00001.htm");
-          loadNext();
+        webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + getCalendarWeek() + "/c/c00001.htm");
+        //loadNext();
       }
     });
     try
@@ -104,11 +133,12 @@ public class WebBrowserTest extends Application
 
   }
 
-  private void loadNext() {
-      webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/"+getCalendarWeek()+"/c/c"+String.format("%05d", counter)+".htm");
-      counter++;
+  private void loadNext()
+  {
+    webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + getCalendarWeek() + "/c/c" + String.format("%05d", counter) + ".htm");
+    counter++;
   }
-  
+
   private int getCalendarWeek()
   {
     Calendar cal = Calendar.getInstance();
@@ -133,12 +163,11 @@ public class WebBrowserTest extends Application
     {
       String line = "";
     }
-    
+
     for (int i = 0; i < lines.length; i += 2)
     {
-      lines[i] = 1+i/2 + "    ";
+      lines[i] = 1 + i / 2 + "    ";
     }
-    
 
     for (int i = 0; i < schedule.length; i++)
     {
@@ -146,7 +175,6 @@ public class WebBrowserTest extends Application
 
       // System.out.println("lines.length = " + lines.length);
       // System.out.println("day.length = " + day.length);
-
       for (int j = 0; j < day.length; j++)
       {
         Lesson lesson = day[j];
@@ -163,7 +191,7 @@ public class WebBrowserTest extends Application
         }
       }
     }
-    
+
     for (String line : lines)
     {
       System.out.println(line);
@@ -175,4 +203,21 @@ public class WebBrowserTest extends Application
     launch(args);
   }
 
+  
+  public static String convertToString(Document doc) {
+    try {
+        StringWriter sw = new StringWriter();
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+        transformer.transform(new DOMSource(doc), new StreamResult(sw));
+        return sw.toString();
+    } catch (Exception ex) {
+        throw new RuntimeException("Error converting to String", ex);
+    }
+}
 }
