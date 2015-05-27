@@ -23,10 +23,12 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.web.WebEngine;
@@ -51,49 +53,16 @@ public class FXMLGUIController implements Initializable
   private TextArea taConsole;
   @FXML
   private WebView wv;
+  @FXML
+  private Button btUpdate;
 
   private Kürzel kürzel;
   public URL url;
   private BufferedWriter writer;
 
-  public void onCheckBox() throws Exception
+  public void onUpdate(ActionEvent event)
   {
-    for (int j = 0; j < 2; j++)
-    {
-      int z = 0;
-      String format = null;
-      if(j == 0){
-        z = getCalendarWeek();
-        format = String.format("%02d", z);
-      }
-      else{
-        z = getCalendarWeek() +1;
-        format = String.format("%02d", z);
-      }
-      for (int i = 1;; i++)
-      {
-        String formatted = String.format("%02d", i);
-        URL findurl = new URL("https://supplierplan.htl-kaindorf.at/supp_neu/"+ format + "/c/c000" + formatted + ".htm");
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(findurl.openStream()));
-        BufferedWriter docwriter = new BufferedWriter(new FileWriter(format + "outputfile" + formatted + ".txt"));
-
-        String inputLine;
-        while ((inputLine = in.readLine()) != null)
-        {
-          try
-          {
-            docwriter.write(inputLine);
-          } catch (IOException e)
-          {
-            e.printStackTrace();
-            return;
-          }
-        }
-        in.close();
-        docwriter.close();
-      }
-    }
+      DAL.download();
   }
 
   @Override
@@ -101,30 +70,9 @@ public class FXMLGUIController implements Initializable
   {
     cbLehrer.getItems().addAll(kürzel.values());
     cbLehrer.setPromptText("Lehrer Kürzel");
-    cbLehrer.setOnAction(new EventHandler()
-    {
-
-      @Override
-      public void handle(Event event)
-      {
-        try
-        {
-          onCheckBox();
-        } catch (Exception ex)
-        {
-          System.out.println(ex.getMessage());
-        }
-      }
-    });
+    btUpdate.setOnAction(this::onUpdate);
   }
 
-  private int getCalendarWeek()
-  {
-    Calendar cal = Calendar.getInstance();
-    cal.setTimeInMillis(System.currentTimeMillis());
-    int week = cal.get(Calendar.WEEK_OF_YEAR);
 
-    return week;
-  }
 
 }
