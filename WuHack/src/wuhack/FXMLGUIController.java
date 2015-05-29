@@ -62,31 +62,20 @@ public class FXMLGUIController implements Initializable
 
   public void onUpdate(ActionEvent event)
   {
+      btUpdate.setText("Update");
       DAL.download();
+  }
+  public void onError(Exception e){
+    taConsole.setText(e.getMessage());
+  }
+  public void setTextOnTextArea(String t){
+    taConsole.setText(t);
   }
 
   @Override
   public void initialize(URL url, ResourceBundle rb)
   {
     btUpdate.setOnAction(this::onUpdate);
-    
-//    cbLehrer.getItems().addAll(kürzel.values());
-//    cbLehrer.setPromptText("Lehrer Kürzel");
-//    cbLehrer.setOnAction(new EventHandler()
-//    {
-//
-//      @Override
-//      public void handle(Event event)
-//      {
-//        try
-//        {
-//          onCheckBox();
-//        } catch (Exception ex)
-//        {
-//          System.out.println(ex.getMessage());
-//        }
-//      }
-//    });
   }
 
 

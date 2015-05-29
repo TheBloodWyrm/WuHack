@@ -7,6 +7,7 @@ package wuhack;
 
 import java.io.IOException;
 import java.net.Authenticator;
+import java.net.InetAddress;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -32,7 +33,7 @@ public class WuHack extends Application
     stage.setTitle("WuHack");
     stage.setScene(scene);
     stage.show();
-    
+        
     FXMLPopupController pop = new FXMLPopupController();
         FXMLLoader l = new FXMLLoader(WebBrowserTest.class.getResource("FXMLPopup.fxml"));
         l.setController(pop);
@@ -51,6 +52,7 @@ public class WuHack extends Application
             System.out.println(ex.getMessage());
         }
         auth.show(stage);
+    
   }
 
   /**

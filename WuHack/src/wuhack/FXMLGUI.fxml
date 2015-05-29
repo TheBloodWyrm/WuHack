@@ -95,7 +95,7 @@
             </TextArea>
             <StackPane>
                <children>
-                  <Button fx:id="btUpdate" mnemonicParsing="false" text="Update" GridPane.columnIndex="2" />
+                  <Button fx:id="btUpdate" mnemonicParsing="false" text="Suchen" GridPane.columnIndex="2" />
                </children>
                <GridPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
