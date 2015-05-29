@@ -12,8 +12,16 @@ import org.w3c.dom.Element;
 
 public class HTMLModel
 {
+    private static final String titleSheet = "font-size:23pt;";
+    private static final String bodySheet = "font-family: 'Segoe UI', sans-serif;font-size:14pt";
+    private static final String firstLineSheet = "background-color:#353A3E;color:#FFFFFF;padding:5px;text-align: center;";
+    private static final String numbercolSheet = "background-color:#555A5E;color:#FFFFFF;padding:5px;text-align: center;";
+    
   public static Document convertToHTML(Lesson[][] schedule, String title, int calweek)
   {
+      //"Stylesheets"
+      
+      
     String[] days = getDays(calweek);
     
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -37,12 +45,23 @@ public class HTMLModel
     htmltag.appendChild(head);
     
     Element body = doc.createElement("body");
+    body.setAttribute("style", bodySheet);
     htmltag.appendChild(body);
     
-    Element stylenode = doc.createElement("stylesheets");
-    Element urlnode = doc.createElement("URL");
-    urlnode.setAttribute("value", "@schedule.css");
-    stylenode.appendChild(urlnode);
+    
+    //stylesheet
+    //<link rel="stylesheet" type="text/css" href="mystyle.css">
+//    Element stylenode = doc.createElement("stylesheets");
+//    Element urlnode = doc.createElement("URL");
+//    urlnode.setAttribute("value", "@schedule.css");
+//    stylenode.appendChild(urlnode);
+//    head.appendChild(stylenode);
+    
+    Element stylenode = doc.createElement("link");
+    stylenode.setAttribute("rel", "stylesheet");
+    stylenode.setAttribute("type", "text/css");
+    stylenode.setAttribute("href", "schedule.css");
+    
     head.appendChild(stylenode);
     
      
@@ -52,6 +71,7 @@ public class HTMLModel
     Element titlenode = doc.createElement("font");
     titlenode.setTextContent(title);
     titlenode.setAttribute("id", "title");
+    titlenode.setAttribute("style", titleSheet);
     centernode.appendChild(titlenode);
     
     Element datenode = doc.createElement("font");
@@ -71,6 +91,8 @@ public class HTMLModel
     
     Element firstline = doc.createElement("tr");
     firstline.setAttribute("id", "firstline");
+    firstline.setAttribute("style", firstLineSheet);
+
     firstline.appendChild(doc.createElement("td"));
     
     
@@ -93,6 +115,7 @@ public class HTMLModel
       Element numbertd = doc.createElement("td");
       numbertd.setAttribute("id", "numbercol");
       numbertd.setTextContent(i + "");
+      numbertd.setAttribute("style", numbercolSheet);
       tr.appendChild(numbertd);
       i++;
       

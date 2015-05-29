@@ -51,9 +51,9 @@ public class WebBrowserTest extends Application
     WebView browser = new WebView();
     webEngine = browser.getEngine();
     root.getChildren().add(browser);
-    Scene scene = new Scene(root, 300, 250);
+    Scene scene = new Scene(root, 800, 600);
 
-    primaryStage.setTitle("stuff");
+    primaryStage.setTitle("gayer Scheiß");
     primaryStage.setScene(scene);
     primaryStage.show();
 
