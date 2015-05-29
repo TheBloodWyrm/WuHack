@@ -41,6 +41,7 @@ public class WebBrowserTest extends Application
   private Lesson[][][] timetable = new Lesson[32][5][12];
   private int counter = 1;
   private WebEngine webEngine;
+  private boolean first = true;
 
   @Override
   public void start(Stage primaryStage)
@@ -63,27 +64,27 @@ public class WebBrowserTest extends Application
       public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue)
       {
         System.out.println(newValue);
-        if (newValue == Worker.State.SUCCEEDED)
+        if (first)
         {
-          ScheduleModel m = new ScheduleModel();
-          schedule = m.analyzeDoc(webEngine.documentProperty().get(), getCalendarWeek(), Integer.parseInt("00001"));
-          printSchedule();
+          if (newValue == Worker.State.SUCCEEDED)
+          {
+            ScheduleModel m = new ScheduleModel();
+            schedule = m.analyzeDoc(webEngine.documentProperty().get(), getCalendarWeek(), Integer.parseInt("00001"));
+            printSchedule();
 
-          
-            System.out.println("Teachers");
-          timetable[counter-1] = schedule;
-          schedule = m.getTeacherLessons("RI", timetable);
-          printSchedule();
-          
+//            System.out.println("Teachers");
+//            timetable[counter - 1] = schedule;
+//            schedule = m.getTeacherLessons("RI", timetable);
+//            printSchedule();
+
 //            System.out.println("Counter: "+counter);
 //          if(counter <= 31)
 //            loadNext();
-
-
-          
             webEngine.loadContent(convertToString(HTMLModel.convertToHTML(schedule, "1AHIF", getCalendarWeek())));
-          
+            first = false;
+          }
         }
+
       }
     });
 
@@ -186,21 +187,24 @@ public class WebBrowserTest extends Application
     launch(args);
   }
 
-  
-  public static String convertToString(Document doc) {
-    try {
-        StringWriter sw = new StringWriter();
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = tf.newTransformer();
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+  public static String convertToString(Document doc)
+  {
+    try
+    {
+      StringWriter sw = new StringWriter();
+      TransformerFactory tf = TransformerFactory.newInstance();
+      Transformer transformer = tf.newTransformer();
+      transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+      transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 
-        transformer.transform(new DOMSource(doc), new StreamResult(sw));
-        return sw.toString();
-    } catch (Exception ex) {
-        throw new RuntimeException("Error converting to String", ex);
+      transformer.transform(new DOMSource(doc), new StreamResult(sw));
+      return sw.toString();
     }
-}
+    catch (Exception ex)
+    {
+      throw new RuntimeException("Error converting to String", ex);
+    }
+  }
 }

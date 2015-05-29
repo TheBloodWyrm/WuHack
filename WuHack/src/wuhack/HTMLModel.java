@@ -96,13 +96,51 @@ public class HTMLModel
       tr.appendChild(numbertd);
       i++;
       
-      for (Lesson lesson : day)
+      for (int k = 0; k<schedule.length; k++)
+      for (int j = 0; j<schedule[k].length; j++)
+      for (int l = 0; l<schedule.length; l++)
       {
-//        Element td = doc.createElement("td");
-//        Element table = doc.createElement("table");
-//        td.setTextContent( (lesson != null ? lesson.getSubject() : "") );
-//        System.out.println(""+lesson);
-//        tr.appendChild(td);
+        Lesson lesson = schedule[l][j];
+        
+        System.out.println(lesson);
+        
+        Element td = doc.createElement("td");
+        Element t = doc.createElement("table");
+        
+        Element row1 = doc.createElement("tr");
+        Element subject = doc.createElement("td");
+        Element classes = doc.createElement("td");
+        
+        Element row2 = doc.createElement("tr");
+        Element teachers = doc.createElement("td");
+        Element classroom = doc.createElement("td");
+        
+        if(lesson != null) {
+          System.out.println(lesson.getSubject()+" "+lesson.getKlasse()+" "+lesson.getTeachers()+" "+lesson.getClassrooms());
+          
+          subject.setTextContent(lesson.getSubject());
+          
+          classes.setTextContent(lesson.getKlasse());
+          
+          for(String str : lesson.getTeachers()) {
+            teachers.setTextContent(teachers.getTextContent()+str+" \n");
+          }
+          
+          for(String str : lesson.getClassrooms()) {
+            classroom.setTextContent(classroom.getTextContent()+str+" \n");
+          }
+        }
+        
+        row1.appendChild(subject);
+        row1.appendChild(classes);
+        
+        row2.appendChild(teachers);
+        row2.appendChild(classroom);
+        
+        t.appendChild(row1);
+        t.appendChild(row2);
+        td.appendChild(t);
+        tr.appendChild(td);
       }
       
       tablebody.appendChild(tr);
