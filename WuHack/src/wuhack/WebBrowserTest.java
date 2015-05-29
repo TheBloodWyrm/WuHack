@@ -75,27 +75,14 @@ public class WebBrowserTest extends Application
           schedule = m.getTeacherLessons("RI", timetable);
           printSchedule();
           
-            System.out.println("Counter: "+counter);
-          if(counter <= 31)
-            loadNext();
-
-
-          //          System.out.println("Teachers");
-//          timetable[counter-1] = schedule;
-//          schedule = m.getTeacherLessons(Kürzel.RI, timetable);
-//          printSchedule();
 //            System.out.println("Counter: "+counter);
 //          if(counter <= 31)
 //            loadNext();
-          try
-          {
+
+
+          
             webEngine.loadContent(convertToString(HTMLModel.convertToHTML(schedule, "1AHIF", getCalendarWeek())));
-          }
-          catch (Exception ex)
-          {
-            System.out.println(ex.getMessage());
-            System.out.println(ex.getCause());
-          }
+          
         }
       }
     });

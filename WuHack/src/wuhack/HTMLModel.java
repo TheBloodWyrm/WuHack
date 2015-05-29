@@ -1,11 +1,9 @@
 package wuhack;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -14,19 +12,38 @@ import org.w3c.dom.Element;
 
 public class HTMLModel
 {
-  public static Document convertToHTML(Lesson[][] schedule, String title, int calweek) throws IOException, ParserConfigurationException
+  public static Document convertToHTML(Lesson[][] schedule, String title, int calweek)
   {
     String[] days = getDays(calweek);
     
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder builder = factory.newDocumentBuilder();
-    Document doc = builder.newDocument();
+    DocumentBuilder builder;
+    Document doc = null;
+    try
+    {
+      builder = factory.newDocumentBuilder();
+      doc = builder.newDocument();
+    }
+    catch (ParserConfigurationException ex)
+    {
+      System.out.println("DocumentBuilder exception");
+      return null;
+    }
+    
+    Element htmltag = doc.createElement("html");
+    doc.appendChild(htmltag);
+    
+    Element head = doc.createElement("head");
+    htmltag.appendChild(head);
+    
+    Element body = doc.createElement("body");
+    htmltag.appendChild(body);
     
     Element stylenode = doc.createElement("stylesheets");
     Element urlnode = doc.createElement("URL");
     urlnode.setAttribute("value", "@schedule.css");
     stylenode.appendChild(urlnode);
-    doc.appendChild(stylenode);
+    head.appendChild(stylenode);
     
      
     
@@ -38,12 +55,16 @@ public class HTMLModel
     centernode.appendChild(titlenode);
     
     Element datenode = doc.createElement("font");
-    datenode.setTextContent(days[0] + " - " + days[1] + "<br>");
+    datenode.setTextContent(days[0] + " - " + days[1]);
     datenode.setAttribute("id", "date");
     centernode.appendChild(datenode);
     
     Element table = doc.createElement("table");
     table.setAttribute("id", "table");
+    table.setAttribute("border", "1");
+    table.setAttribute("cellpadding", "1");
+    table.setAttribute("cellspacing", "1");
+    table.setAttribute("rules", "all");
     
     Element tablebody = doc.createElement("tablebody");
     
@@ -58,6 +79,7 @@ public class HTMLModel
       Element td = doc.createElement("td");
       td.setAttribute("id", "weekday");
       td.setTextContent(w.toString());
+      System.out.println(w.toString());
       firstline.appendChild(td);
     }
     
@@ -76,7 +98,11 @@ public class HTMLModel
       
       for (Lesson lesson : day)
       {
-        // TODO
+//        Element td = doc.createElement("td");
+//        Element table = doc.createElement("table");
+//        td.setTextContent( (lesson != null ? lesson.getSubject() : "") );
+//        System.out.println(""+lesson);
+//        tr.appendChild(td);
       }
       
       tablebody.appendChild(tr);
@@ -84,7 +110,7 @@ public class HTMLModel
     
     table.appendChild(tablebody);
     centernode.appendChild(table);
-    doc.appendChild(centernode);
+    body.appendChild(centernode);
         
     
     return doc;
