@@ -22,16 +22,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
-<<<<<<< HEAD
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-import static wuhack.WebBrowserTest.convertToString;
-=======
 import javafx.scene.control.ToggleButton;
+import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Popup;
 import javafx.stage.WindowEvent;
->>>>>>> origin/master
 
 /**
  *
@@ -48,30 +43,14 @@ public class FXMLGUIController implements Initializable {
     @FXML
     private Button btUpdate;
     
+    @FXML
+  private ToggleButton btLehrer, btKlassen;
+    
     public URL url;
     private BufferedWriter writer;
     private WebEngine webEngine;
     private ScheduleModel model;
-    
-    public void onUpdate(ActionEvent event) {
-        btUpdate.setText("Update");
-        System.out.println("load");
-        webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + getCalendarWeek() + "/c/c" + String.format("%05d", 1) + ".htm");
-        System.out.println(model.analyzeDoc(webEngine.getDocument(), getCalendarWeek(), 1)[0].toString());
-        //model.loadAllLessons(webEngine, getCalendarWeek());
-        System.out.println("finished");
-        DAL.download();
-        
-    }
-
-    public void onError(Exception e) {
-        taConsole.setText(e.getMessage());
-    }
-
-<<<<<<< HEAD
-    public void setTextOnTextArea(String t) {
-        taConsole.setText(t);
-    }
+    private boolean lehrer;
     
     private int getCalendarWeek()
   {
@@ -81,35 +60,6 @@ public class FXMLGUIController implements Initializable {
 
     return week;
   }
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        model = new ScheduleModel();
-        webEngine = wv.getEngine();
-        
-        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
-            
-            @Override
-            public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
-                System.out.println(newValue);
-                if (newValue == Worker.State.SUCCEEDED) {
-                    
-                    //webEngine.loadContent(convertToString(HTMLModel.convertToHTML(schedule, "1AHIF", getCalendarWeek())));
-                }
-            }
-        });
-        
-        btUpdate.setOnAction(this::onUpdate);
-    }
-    
-=======
-  @FXML
-  private ToggleButton btLehrer, btKlassen;
-
-  private Kürzel kürzel;
-  public URL url;
-  private BufferedWriter writer;
-  private boolean lehrer = true;
 
   public void onUpdate(ActionEvent event)
   {
@@ -138,6 +88,13 @@ public class FXMLGUIController implements Initializable {
     auth.show(btUpdate.getScene().getWindow());
 
     btUpdate.setText("Update");
+    
+    System.out.println("load");
+        webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + getCalendarWeek() + "/c/c" + String.format("%05d", 1) + ".htm");
+        System.out.println(model.analyzeDoc(webEngine.getDocument(), getCalendarWeek(), 1)[0].toString());
+        //model.loadAllLessons(webEngine, getCalendarWeek());
+        System.out.println("finished");
+    
     DAL.download();
   }
 
@@ -172,7 +129,20 @@ public class FXMLGUIController implements Initializable {
     btLehrer.setDisable(true);
     btLehrer.setOnAction(this::onLehrer);
     btKlassen.setOnAction(this::onKlassen);
+    
+    model = new ScheduleModel();
+        webEngine = wv.getEngine();
+        
+        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
+            
+            @Override
+            public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+                System.out.println(newValue);
+                if (newValue == Worker.State.SUCCEEDED) {
+                    
+                    //webEngine.loadContent(convertToString(HTMLModel.convertToHTML(schedule, "1AHIF", getCalendarWeek())));
+                }
+            }
+        });
   }
-
->>>>>>> origin/master
 }
