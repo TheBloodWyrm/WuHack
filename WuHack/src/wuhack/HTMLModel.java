@@ -17,6 +17,7 @@ public class HTMLModel
   private static final String bodySheet = "font-family: 'Segoe UI', sans-serif;font-size:14pt";
   private static final String firstLineSheet = "background-color:#353A3E;color:#FFFFFF;padding:5px;text-align: center;";
   private static final String numbercolSheet = "background-color:#555A5E;color:#FFFFFF;padding:5px;text-align: center;";
+  private static final String subjectSheet = "font-weight:bold;";
 
   public static Document convertToHTML(Lesson[][] schedule, String title, int calweek)
   {
@@ -117,46 +118,39 @@ public class HTMLModel
 
         System.out.println(lesson);
 
-        Element td = doc.createElement("td");
-        Element t = doc.createElement("table");
-
-        Element row1 = doc.createElement("tr");
-        Element subject = doc.createElement("td");
-        Element classes = doc.createElement("td");
-
-        Element row2 = doc.createElement("tr");
-        Element teachers = doc.createElement("td");
-        Element classroom = doc.createElement("td");
-
         if (lesson != null)
         {
-          System.out.println(lesson.getSubject() + " " + lesson.getKlasse() + " " + lesson.getTeachers() + " " + lesson.getClassrooms());
+          Element td = doc.createElement("td");
+          Element t = doc.createElement("table");
 
+          Element subjectrow = doc.createElement("tr");
+          Element subject = doc.createElement("td");
+          subject.setAttribute("style", subjectSheet);
           subject.setTextContent(lesson.getSubject());
+          subjectrow.appendChild(subject);
+          t.appendChild(subjectrow);
 
-          classes.setTextContent(lesson.getKlasse());
-
-          for (String str : lesson.getTeachers())
+          for (int i = 0; i < lesson.getTeachers().length; i++)
           {
-            teachers.setTextContent(teachers.getTextContent() + str + " \n");
+            Element row = doc.createElement("tr");
+            
+            Element teacher = doc.createElement("td");
+            teacher.setTextContent(lesson.getTeachers()[i]);
+            row.appendChild(teacher);
+            
+            Element classroom = doc.createElement("td");
+            classroom.setTextContent(lesson.getClassrooms()[i]);
+            row.appendChild(classroom);
+            
+            t.appendChild(row);
           }
 
-          for (String str : lesson.getClassrooms())
-          {
-            classroom.setTextContent(classroom.getTextContent() + str + " \n");
-          }
+          System.out.println(lesson.getSubject() + " " + lesson.getKlasse() + " " + lesson.getTeachers() + " " + lesson.getClassrooms());
+          
+          td.appendChild(t);
+          tr.appendChild(td);
         }
 
-        row1.appendChild(subject);
-        row1.appendChild(classes);
-
-        row2.appendChild(teachers);
-        row2.appendChild(classroom);
-
-        t.appendChild(row1);
-        t.appendChild(row2);
-        td.appendChild(t);
-        tr.appendChild(td);
       }
 
       tablebody.appendChild(tr);

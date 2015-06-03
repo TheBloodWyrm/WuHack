@@ -103,7 +103,7 @@ public class ScheduleModel
               }
               else
               {
-                subject = inCells.item(0).getTextContent().trim();
+                subject = removeSigns(inCells.item(0).getTextContent().trim());
                 System.out.println(" " + subject);
               }
             }
@@ -150,7 +150,7 @@ public class ScheduleModel
             {
               //Lesson l = new Lesson(convertTeachers(teachers), subject, klasse, convertClassrooms(classrooms), hour + k, calweek, weekday);
               Lesson l = new Lesson(teachers.toArray(new String[0]), subject, klasse, classrooms.toArray(new String[0]), hour + k, calweek, weekday);
-              schedule[j - 1][((i - 1) / 2) + k] = l;
+              schedule[j - 1 + doneCells][((i - 1) / 2) + k] = l;
             }
           }
         }

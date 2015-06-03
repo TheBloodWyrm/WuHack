@@ -43,7 +43,7 @@ public class WuHack extends Application
             @Override
             public void handle(WindowEvent event) {
                 System.out.println(""+pop.isReady());
-                Authenticator.setDefault(new AuthenticatorTest(pop.getUserName(), pop.getPasswword()));
+                Authenticator.setDefault(new AuthenticatorTest(pop.getUserName(), pop.getPassword()));
             }
         });
         try {

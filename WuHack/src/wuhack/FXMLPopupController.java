@@ -38,7 +38,7 @@ public class FXMLPopupController implements Initializable {
         return user;
     }
 
-    public char[] getPasswword() {
+    public char[] getPassword() {
         return passwd;
     }
     

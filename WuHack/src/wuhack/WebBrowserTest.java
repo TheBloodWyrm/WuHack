@@ -100,8 +100,8 @@ public class WebBrowserTest extends Application
       public void handle(WindowEvent event)
       {
         System.out.println("" + pop.isReady());
-        Authenticator.setDefault(new AuthenticatorTest(pop.getUserName(), pop.getPasswword()));
-        webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + (getCalendarWeek()+2) + "/c/c00001.htm");
+        Authenticator.setDefault(new AuthenticatorTest(pop.getUserName(), pop.getPassword()));
+        webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + (getCalendarWeek()+1) + "/c/c00001.htm");
         //loadNext();
       }
     });
