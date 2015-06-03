@@ -5,17 +5,11 @@
  */
 package wuhack;
 
-import java.io.IOException;
-import java.net.Authenticator;
-import java.net.InetAddress;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 /**
  *
