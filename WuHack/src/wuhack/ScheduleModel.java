@@ -8,6 +8,10 @@ package wuhack;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.concurrent.Worker.State;
+import javafx.scene.web.WebEngine;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.html.HTMLCollection;
@@ -46,6 +50,7 @@ public class ScheduleModel
 
     System.out.println("FontText: " + f.getTextContent());
     String klasse = f.getTextContent();
+    classes.add(klasse);
 
 //    for (int i = 0; i < centerChilds.getLength(); i++)
 //    {
@@ -163,7 +168,7 @@ public class ScheduleModel
       }
 
     }
-
+    
     return schedule;
   }
 
@@ -193,7 +198,7 @@ public class ScheduleModel
 
   public Lesson[][] getTeacherLessons(String ku, Lesson[][][] le)
   {
-    Lesson[][] table = new Lesson[12][12];
+    Lesson[][] table = new Lesson[5][12];
 
     for (int i = 0; i < le.length; i++)
     {
@@ -215,6 +220,27 @@ public class ScheduleModel
     }
 
     return table;
+  }
+  
+  public void loadAllLessons(WebEngine we, int week) {
+      classes.clear();
+      kuerzel.clear();
+      
+      
+      for (int i = 1; i < timetable.length-1; i++) {
+          we.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + (week+1) + "/c/c" + String.format("%05d", i) + ".htm");
+          
+          while(we.getLoadWorker().getState() != State.SUCCEEDED) {
+              System.out.println(we.getLoadWorker().getState()+" "+i);
+              try {
+                  Thread.sleep(10);
+              } catch (InterruptedException ex) {
+                  Logger.getLogger(ScheduleModel.class.getName()).log(Level.SEVERE, null, ex);
+              }
+          }
+          
+          timetable[i] = analyzeDoc(we.getDocument(), week, i);
+      }
   }
 
   private boolean containsKürzel(String[] a, String k)
