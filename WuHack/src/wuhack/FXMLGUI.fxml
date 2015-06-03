@@ -38,8 +38,11 @@
                         <RowConstraints />
                     </rowConstraints>
                      <children>
-                        <ToggleButton fx:id="tbLehrer" minWidth="50.0" mnemonicParsing="false" prefWidth="95.0" text="Lehrer" textAlignment="CENTER" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                        <ToggleButton fx:id="tbKlassen" mnemonicParsing="false" prefWidth="95.0" text="Klassen" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <ToggleButton fx:id="btLehrer" minWidth="50.0" mnemonicParsing="false" prefWidth="95.0" text="Lehrer" textAlignment="CENTER" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="selection" />
+                           </toggleGroup></ToggleButton>
+                        <ToggleButton fx:id="btKlassen" mnemonicParsing="false" prefWidth="95.0" text="Klassen" toggleGroup="$selection" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                </children>

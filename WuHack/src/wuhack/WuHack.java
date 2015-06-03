@@ -32,27 +32,7 @@ public class WuHack extends Application
     Scene scene = new Scene(root);
     stage.setTitle("WuHack");
     stage.setScene(scene);
-    stage.show();
-        
-    FXMLPopupController pop = new FXMLPopupController();
-        FXMLLoader l = new FXMLLoader(WebBrowserTest.class.getResource("FXMLPopup.fxml"));
-        l.setController(pop);
-        Popup auth = new Popup();
-        auth.setOnHidden(new EventHandler<WindowEvent>() {
-
-            @Override
-            public void handle(WindowEvent event) {
-                System.out.println(""+pop.isReady());
-                Authenticator.setDefault(new AuthenticatorTest(pop.getUserName(), pop.getPassword()));
-            }
-        });
-        try {
-            auth.getContent().add(l.load());
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-        auth.show(stage);
-    
+    stage.show();    
   }
 
   /**
