@@ -96,8 +96,18 @@ public class FXMLGUIController implements Initializable {
     
     private void load() {
         System.out.println("load");
+        
+        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+                if(newValue == Worker.State.SUCCEEDED) {
+                    
+                    System.out.println(model.analyzeDoc(webEngine.getDocument(), getCalendarWeek(), 1)[0][0]);
+                }
+            }
+        });
         webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + getCalendarWeek() + "/c/c" + String.format("%05d", 1) + ".htm");
-        System.out.println(model.analyzeDoc(webEngine.getDocument(), getCalendarWeek(), 1)[0][0]);
         //model.loadAllLessons(webEngine, getCalendarWeek());
         System.out.println("finished");
     }
