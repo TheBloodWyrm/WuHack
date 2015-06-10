@@ -40,166 +40,143 @@ import javafx.util.Callback;
  *
  * @author Paul Petritsch
  */
-public class FXMLGUIController implements Initializable
-{
+public class FXMLGUIController implements Initializable {
 
-  @FXML
-  private TableView tvDaten;
-  @FXML
-  private TextArea taConsole;
-  @FXML
-  private WebView wv;
-  @FXML
-  private Button btUpdate;
+    @FXML
+    private TableView tvDaten;
+    @FXML
+    private TextArea taConsole;
+    @FXML
+    private WebView wv;
+    @FXML
+    private Button btUpdate;
 
-  @FXML
-  private ToggleButton btLehrer, btKlassen;
+    @FXML
+    private ToggleButton btLehrer, btKlassen;
 
-  public URL url;
-  private BufferedWriter writer;
-  private WebEngine webEngine;
-  private ScheduleModel model;
-  private boolean lehrer;
+    public URL url;
+    private BufferedWriter writer;
+    private WebEngine webEngine;
+    private ScheduleModel model;
+    private boolean lehrer;
 
-  private int getCalendarWeek()
-  {
-    Calendar cal = Calendar.getInstance();
-    cal.setTimeInMillis(System.currentTimeMillis());
-    int week = cal.get(Calendar.WEEK_OF_YEAR);
+    private int getCalendarWeek() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(System.currentTimeMillis());
+        int week = cal.get(Calendar.WEEK_OF_YEAR);
 
-    return week;
-  }
-
-  public void onUpdate(ActionEvent event)
-  {
-    FXMLPopupController pop = new FXMLPopupController();
-    FXMLLoader l = new FXMLLoader(WebBrowserTest.class.getResource("FXMLPopup.fxml"));
-    l.setController(pop);
-    Popup auth = new Popup();
-
-    auth.setOnHidden(new EventHandler<WindowEvent>()
-    {
-
-      @Override
-      public void handle(WindowEvent event)
-      {
-        System.out.println("" + pop.isReady());
-        Authenticator.setDefault(new AuthenticatorTest(pop.getUserName(), pop.getPassword()));
-
-        if (pop.isReady())
-        {
-          load();
-        }
-      }
-    });
-
-    try
-    {
-      auth.getContent().add(l.load());
-    }
-    catch (IOException ex)
-    {
-      System.out.println(ex.getMessage());
+        return week;
     }
 
-    auth.show(btUpdate.getScene().getWindow());
+    public void onUpdate(ActionEvent event) {
+        FXMLPopupController pop = new FXMLPopupController();
+        FXMLLoader l = new FXMLLoader(WebBrowserTest.class.getResource("FXMLPopup.fxml"));
+        l.setController(pop);
+        Popup auth = new Popup();
 
-    btUpdate.setText("Update");
+        auth.setOnHidden(new EventHandler<WindowEvent>() {
 
-    DAL.download();
-  }
+            @Override
+            public void handle(WindowEvent event) {
+                System.out.println("" + pop.isReady());
+                Authenticator.setDefault(new AuthenticatorTest(pop.getUserName(), pop.getPassword()));
 
-  private void load()
-  {
-    System.out.println("load");
+                if (pop.isReady()) {
+                    load();
+                }
+            }
+        });
 
-    webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>()
-    {
-
-      @Override
-      public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue)
-      {
-        if (newValue == Worker.State.SUCCEEDED)
-        {
-
-          System.out.println(model.analyzeDoc(webEngine.getDocument(), getCalendarWeek(), 1)[0][0]);
+        try {
+            auth.getContent().add(l.load());
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
         }
-      }
-    });
-    webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + getCalendarWeek() + "/c/c" + String.format("%05d", 1) + ".htm");
-    //model.loadAllLessons(webEngine, getCalendarWeek());
-    System.out.println("finished");
-  }
 
-  public void onError(Exception e)
-  {
-    taConsole.setText(e.getMessage());
-  }
+        auth.show(btUpdate.getScene().getWindow());
 
-  public void setTextOnTextArea(String t)
-  {
-    taConsole.setText(t);
-  }
+        btUpdate.setText("Update");
 
-  public void onLehrer(ActionEvent event)
-  {
-    btKlassen.setDisable(false);
-    btLehrer.setDisable(true);
-    lehrer = true;
+        DAL.download();
+    }
 
-    tvDaten.getItems().clear();
-    TableColumn<String, String> col = new TableColumn<>("Kürzel");
+    private void load() {
+        System.out.println("load");
+
+        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+                if (newValue == Worker.State.SUCCEEDED) {
+
+                    System.out.println(model.analyzeDoc(webEngine.getDocument(), getCalendarWeek(), 1)[0][0]);
+                }
+            }
+        });
+        webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + getCalendarWeek() + "/c/c" + String.format("%05d", 1) + ".htm");
+        //model.loadAllLessons(webEngine, getCalendarWeek());
+        System.out.println("finished");
+    }
+
+    public void onError(Exception e) {
+        taConsole.setText(e.getMessage());
+    }
+
+    public void setTextOnTextArea(String t) {
+        taConsole.setText(t);
+    }
+
+    public void onLehrer(ActionEvent event) {
+        btKlassen.setDisable(false);
+        btLehrer.setDisable(true);
+        lehrer = true;
+
+        tvDaten.getItems().clear();
+        TableColumn<String, String> col = new TableColumn<>("Kürzel");
     //col.setCellValueFactory((CellDataFeatures<String, String> p) -> (ObservableValue<String>) ScheduleModel.getKuerzel());
-    
-    col.setPrefWidth(200);
-    
-    tvDaten.getColumns().clear();
-    tvDaten.getColumns().add(col);
-    
-    tvDaten.getItems().addAll(Arrays.asList("asdf", "adslkf", "lksjsdlk"));
-  }
 
-public void onDaten(MouseEvent event)
-  {
-    int index = tvDaten.getSelectionModel().getSelectedIndex();
-    if(index >= 0)
-    {
-      System.out.println("clicked index: " + tvDaten.getItems().get(index));
+        col.setPrefWidth(200);
+
+        tvDaten.getColumns().clear();
+        tvDaten.getColumns().add(col);
+
+        tvDaten.getItems().addAll(Arrays.asList("asdf", "adslkf", "lksjsdlk"));
     }
-  }
 
-  public void onKlassen(ActionEvent event)
-  {
-    btKlassen.setDisable(true);
-    btLehrer.setDisable(false);
-    lehrer = false;
-  }
-
-  @Override
-        public void initialize(URL url, ResourceBundle rb)
-  {
-    btUpdate.setOnAction(this::onUpdate);
-    btLehrer.setDisable(true);
-    btLehrer.setOnAction(this::onLehrer);
-    btKlassen.setOnAction(this::onKlassen);
-    tvDaten.setOnMouseClicked(this::onDaten);
-
-    model = ScheduleModel.getInstance();//new ScheduleModel();
-    webEngine = wv.getEngine();
-
-    webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>()
-    {
-
-      @Override
-        public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue)
-      {
-        System.out.println(newValue);
-        if (newValue == Worker.State.SUCCEEDED)
-        {
-
-          //webEngine.loadContent(convertToString(HTMLModel.convertToHTML(schedule, "1AHIF", getCalendarWeek())));
+    public void onDaten(MouseEvent event) {
+        int index = tvDaten.getSelectionModel().getSelectedIndex();
+        if (index >= 0) {
+            System.out.println("clicked index: " + tvDaten.getItems().get(index));
         }
-      }
-    });
-  }
+    }
+
+    public void onKlassen(ActionEvent event) {
+        btKlassen.setDisable(true);
+        btLehrer.setDisable(false);
+        lehrer = false;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        btUpdate.setOnAction(this::onUpdate);
+        btLehrer.setDisable(true);
+        btLehrer.setOnAction(this::onLehrer);
+        btKlassen.setOnAction(this::onKlassen);
+        tvDaten.setOnMouseClicked(this::onDaten);
+
+        model = ScheduleModel.getInstance();//new ScheduleModel();
+        webEngine = wv.getEngine();
+
+        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+                System.out.println(newValue);
+                if (newValue == Worker.State.SUCCEEDED) {
+
+                    //webEngine.loadContent(convertToString(HTMLModel.convertToHTML(schedule, "1AHIF", getCalendarWeek())));
+                }
+            }
+        });
+    }
 }

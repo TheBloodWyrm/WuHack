@@ -6,8 +6,6 @@
 
 package wuhack;
 
-import java.time.LocalDate;
-
 /**
  *
  * @author Julian
