@@ -16,6 +16,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -147,16 +149,24 @@ public class FXMLGUIController implements Initializable
     btLehrer.setDisable(true);
     lehrer = true;
 
-    tvDaten.getItems().clear();
+    //tvDaten.getItems().clear();
     TableColumn<String, String> col = new TableColumn<>("Kürzel");
-    //col.setCellValueFactory((CellDataFeatures<String, String> p) -> (ObservableValue<String>) ScheduleModel.getKuerzel());
-    
-    col.setPrefWidth(200);
+    col.setCellValueFactory((CellDataFeatures<String, String> s) -> (ObservableValue<String>) ScheduleModel.getKuerzel());
+    col.setCellValueFactory((CellDataFeatures<String, String> s) -> (ObservableValue<String>) Arrays.asList("asdf", "adslkf", "lksjsdlk"));
     
     tvDaten.getColumns().clear();
     tvDaten.getColumns().add(col);
     
-    tvDaten.getItems().addAll(Arrays.asList("asdf", "adslkf", "lksjsdlk"));
+    ObservableList<String> data = tvDaten.getItems();
+    data.clear();
+    data.addAll(ScheduleModel.getKuerzel());
+    data.addAll(Arrays.asList("asdf", "adslkf", "lksjsdlk"));
+    
+    col.setPrefWidth(200);
+    
+    
+    
+    //tvDaten.getItems().addAll(Arrays.asList("asdf", "adslkf", "lksjsdlk"));
   }
 
 public void onDaten(MouseEvent event)
