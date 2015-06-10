@@ -69,9 +69,6 @@
         </rowConstraints>
          <children>
             <TableView fx:id="tvDaten" prefHeight="200.0" prefWidth="200.0">
-              <columns>
-                <TableColumn fx:id="data" prefWidth="75.0" text="C1" />
-              </columns>
             </TableView>
             <WebView fx:id="wv" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                <GridPane.margin>
