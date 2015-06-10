@@ -11,8 +11,6 @@ import java.net.Authenticator;
 import java.util.Calendar;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import static javafx.application.Application.launch;
-import static javafx.application.Application.launch;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -67,7 +65,7 @@ public class WebBrowserTest extends Application {
                 System.out.println(newValue);
                 if (first) {
                     if (newValue == Worker.State.SUCCEEDED) {
-                        ScheduleModel m = new ScheduleModel();
+                        ScheduleModel m = ScheduleModel.getInstance(); //new ScheduleModel();
                         schedule = m.analyzeDoc(webEngine.documentProperty().get(), getCalendarWeek(), Integer.parseInt("00001"));
                         printSchedule();
                         printAllNodes(webEngine.getDocument());

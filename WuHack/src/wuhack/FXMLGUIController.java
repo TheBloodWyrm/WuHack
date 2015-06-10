@@ -184,7 +184,7 @@ public void onDaten(MouseEvent event)
     btKlassen.setOnAction(this::onKlassen);
     tvDaten.setOnMouseClicked(this::onDaten);
 
-    model = new ScheduleModel();
+    model = ScheduleModel.getInstance();//new ScheduleModel();
     webEngine = wv.getEngine();
 
     webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>()

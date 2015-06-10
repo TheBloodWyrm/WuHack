@@ -24,10 +24,20 @@ import org.w3c.dom.html.HTMLTableRowElement;
  */
 public class ScheduleModel {
 
-    private static List<String> classes = new ArrayList<>();
-    private static Lesson[][][] timetable = new Lesson[32][5][12];
-    private static List<String> kuerzel = new ArrayList<>(90);
+    private List<String> classes = new ArrayList<>();
+    private Lesson[][][] timetable = new Lesson[32][5][12];
+    private List<String> kuerzel = new ArrayList<>(90);
 
+    private static ScheduleModel instance = new ScheduleModel();
+    
+    private ScheduleModel() {
+        
+    }
+    
+    public static ScheduleModel getInstance() {
+        return instance;
+    }
+    
     public Lesson[][] analyzeDoc(Document d, int calweek, int index) {
         Lesson[][] schedule = new Lesson[5][12];
         
@@ -159,7 +169,7 @@ public class ScheduleModel {
                 for (int k = 0; k < timetable[i][j].length; k++) {
                     Lesson l = timetable[i][j][k];
 
-                    if (l != null && containsKürzel(l.getTeachers(), ku)) {
+                    if (l != null && contains(l.getTeachers(), ku)) {
                         int day = l.getWeekDay().ordinal();
                         int hour = l.getHour() - 1;
 
@@ -169,6 +179,27 @@ public class ScheduleModel {
             }
         }
 
+        return table;
+    }
+    
+    public Lesson[][] getClassroomsLessons(String cl) {
+        Lesson[][] table = new Lesson[5][12];
+        
+        for (int i = 0; i < timetable.length; i++) {
+            for (int j = 0; j < timetable[i].length; j++) {
+                for (int k = 0; k < timetable[i][j].length; k++) {
+                    Lesson l = timetable[i][j][k];
+
+                    if (l != null && contains(l.getClassrooms(), cl)) {
+                        int day = l.getWeekDay().ordinal();
+                        int hour = l.getHour() - 1;
+
+                        table[day][hour] = l;
+                    }
+                }
+            }
+        }
+        
         return table;
     }
 
@@ -192,7 +223,7 @@ public class ScheduleModel {
         }
     }
 
-    private boolean containsKürzel(String[] a, String k) {
+    private boolean contains(String[] a, String k) {
         boolean b = false;
 
         for (int i = 0; i < a.length; i++) {
@@ -231,24 +262,14 @@ public class ScheduleModel {
 
     }
 
-  public static List<String> getClasses()
+  public List<String> getClasses()
   {
     return classes;
-  }
-
-  public static void setClasses(LinkedList<String> classes)
-  {
-    ScheduleModel.classes = classes;
   }
 
   public List<String> getKuerzel()
   {
     return kuerzel;
-  }
-
-  public void setKuerzel(List<String> kuerzel)
-  {
-    this.kuerzel = kuerzel;
   }
 
   public Lesson[][][] getTimetable()
