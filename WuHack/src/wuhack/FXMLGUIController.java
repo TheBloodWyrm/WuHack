@@ -31,6 +31,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -109,6 +110,19 @@ public class FXMLGUIController implements Initializable
     btUpdate.setText("Update");
 
     DAL.download();
+    
+    
+    
+    
+    
+    if(lehrer)
+    {
+      onLehrer(null);
+    }
+    else
+    {
+      onKlassen(null);
+    }
   }
 
   private void load()
@@ -148,25 +162,15 @@ public class FXMLGUIController implements Initializable
     btKlassen.setDisable(false);
     btLehrer.setDisable(true);
     lehrer = true;
-
-    //tvDaten.getItems().clear();
-    TableColumn<String, String> col = new TableColumn<>("Kürzel");
-    col.setCellValueFactory((CellDataFeatures<String, String> s) -> (ObservableValue<String>) ScheduleModel.getKuerzel());
-    col.setCellValueFactory((CellDataFeatures<String, String> s) -> (ObservableValue<String>) Arrays.asList("asdf", "adslkf", "lksjsdlk"));
-    
-    tvDaten.getColumns().clear();
-    tvDaten.getColumns().add(col);
-    
-    ObservableList<String> data = tvDaten.getItems();
-    data.clear();
-    data.addAll(ScheduleModel.getKuerzel());
-    data.addAll(Arrays.asList("asdf", "adslkf", "lksjsdlk"));
-    
-    col.setPrefWidth(200);
-    
-    
-    
-    //tvDaten.getItems().addAll(Arrays.asList("asdf", "adslkf", "lksjsdlk"));
+     
+    ((TableColumn<TableModel, String>) tvDaten.getColumns().get(0)).setText("Lehrer");
+    tvDaten.getItems().clear();
+    ObservableList<TableModel> data = FXCollections.observableArrayList();
+    for (String s : ScheduleModel.getInstance().getKuerzel())
+    {
+      data.add(new TableModel(s, ""));
+    }
+    tvDaten.setItems(data);
   }
 
 public void onDaten(MouseEvent event)
@@ -176,6 +180,8 @@ public void onDaten(MouseEvent event)
     {
       System.out.println("clicked index: " + tvDaten.getItems().get(index));
     }
+    
+    
   }
 
   public void onKlassen(ActionEvent event)
@@ -183,6 +189,15 @@ public void onDaten(MouseEvent event)
     btKlassen.setDisable(true);
     btLehrer.setDisable(false);
     lehrer = false;
+    
+    ((TableColumn<TableModel, String>) tvDaten.getColumns().get(0)).setText("Klassen");
+    tvDaten.getItems().clear();
+    ObservableList<TableModel> data = FXCollections.observableArrayList();
+    for (String s : ScheduleModel.getInstance().getClasses())
+    {
+      data.add(new TableModel(s, ""));
+    }
+    tvDaten.setItems(data);
   }
 
   @Override
@@ -196,6 +211,9 @@ public void onDaten(MouseEvent event)
 
     model = ScheduleModel.getInstance();//new ScheduleModel();
     webEngine = wv.getEngine();
+    
+    onLehrer(null);
+    
 
     webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>()
     {

@@ -9,99 +9,113 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.*?>
 
 <BorderPane fx:id="bp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wuhack.FXMLGUIController">
    
-    <stylesheets>
-        <URL value="@style.css" />
-    </stylesheets>
-   <top>
-      <GridPane prefHeight="50.0" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <StackPane>
-               <children>
-                  <GridPane>
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                    </rowConstraints>
-                     <children>
-                        <ToggleButton fx:id="btLehrer" minWidth="50.0" mnemonicParsing="false" prefWidth="95.0" text="Lehrer" textAlignment="CENTER" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="selection" />
-                           </toggleGroup></ToggleButton>
-                        <ToggleButton fx:id="btKlassen" mnemonicParsing="false" prefWidth="95.0" text="Klassen" toggleGroup="$selection" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                     </children>
-                  </GridPane>
-               </children>
-               <GridPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </GridPane.margin>
-            </StackPane>
-            <StackPane GridPane.columnIndex="1">
-               <children>
-                  <Label text="Stundenplan" GridPane.columnIndex="2" />
-               </children>
-            </StackPane>
-         </children>
-      </GridPane>
-   </top>
-   <center>
-      <GridPane BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <TableView fx:id="tvDaten" prefHeight="200.0" prefWidth="200.0">
-            </TableView>
-            <WebView fx:id="wv" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
-               <GridPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </GridPane.margin>
-            </WebView>
-         </children>
-      </GridPane>
-   </center>
-   <bottom>
-      <GridPane BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <TextArea fx:id="taConsole" disable="true" editable="false" minHeight="45.0" prefHeight="45.0" prefWidth="190.0" GridPane.columnIndex="1">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </TextArea>
-            <StackPane>
-               <children>
-                  <Button fx:id="btUpdate" mnemonicParsing="false" text="Suchen" GridPane.columnIndex="2" />
-               </children>
-               <GridPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </GridPane.margin>
-            </StackPane>
-         </children>
-      </GridPane>
-   </bottom>
+  <stylesheets>
+    <URL value="@style.css" />
+  </stylesheets>
+  <top>
+    <GridPane prefHeight="50.0" BorderPane.alignment="CENTER">
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+      <children>
+        <StackPane>
+          <children>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+              </rowConstraints>
+              <children>
+                <ToggleButton fx:id="btLehrer" minWidth="50.0" mnemonicParsing="false" prefWidth="95.0" text="Lehrer" textAlignment="CENTER" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                  <toggleGroup>
+                    <ToggleGroup fx:id="selection" />
+                  </toggleGroup>
+                </ToggleButton>
+                <ToggleButton fx:id="btKlassen" mnemonicParsing="false" prefWidth="95.0" text="Klassen" toggleGroup="$selection" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+              </children>
+            </GridPane>
+          </children>
+          <GridPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+          </GridPane.margin>
+        </StackPane>
+        <StackPane GridPane.columnIndex="1">
+          <children>
+            <Label text="Stundenplan" GridPane.columnIndex="2" />
+          </children>
+        </StackPane>
+      </children>
+    </GridPane>
+  </top>
+  <center>
+    <GridPane BorderPane.alignment="CENTER">
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+      <children>
+        <TableView fx:id="tvDaten" prefHeight="200.0" prefWidth="200.0">
+          <columns>
+            <TableColumn prefWidth="200" text="Klassen">
+              <cellValueFactory>
+                <PropertyValueFactory property="l1" />
+              </cellValueFactory>
+            </TableColumn>
+            <TableColumn prefWidth="200" text="">
+              <cellValueFactory>
+                <PropertyValueFactory property="l2" />
+              </cellValueFactory>
+            </TableColumn>
+          </columns>
+        </TableView>
+        <WebView fx:id="wv" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+          <GridPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+          </GridPane.margin>
+        </WebView>
+      </children>
+    </GridPane>
+  </center>
+  <bottom>
+    <GridPane BorderPane.alignment="CENTER">
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+      <children>
+        <TextArea fx:id="taConsole" disable="true" editable="false" minHeight="45.0" prefHeight="45.0" prefWidth="190.0" GridPane.columnIndex="1">
+          <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+          </padding>
+        </TextArea>
+        <StackPane>
+          <children>
+            <Button fx:id="btUpdate" mnemonicParsing="false" text="Suchen" GridPane.columnIndex="2" />
+          </children>
+          <GridPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+          </GridPane.margin>
+        </StackPane>
+      </children>
+    </GridPane>
+  </bottom>
 </BorderPane>
