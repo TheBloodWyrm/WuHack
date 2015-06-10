@@ -16,6 +16,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -131,6 +133,7 @@ public class FXMLGUIController implements Initializable {
         btLehrer.setDisable(true);
         lehrer = true;
 
+<<<<<<< HEAD
         tvDaten.getItems().clear();
         TableColumn<String, String> col = new TableColumn<>("Kürzel");
     //col.setCellValueFactory((CellDataFeatures<String, String> p) -> (ObservableValue<String>) ScheduleModel.getKuerzel());
@@ -141,6 +144,59 @@ public class FXMLGUIController implements Initializable {
         tvDaten.getColumns().add(col);
 
         tvDaten.getItems().addAll(Arrays.asList("asdf", "adslkf", "lksjsdlk"));
+=======
+          System.out.println(model.analyzeDoc(webEngine.getDocument(), getCalendarWeek(), 1)[0][0]);
+        }
+      }
+    });
+    webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + getCalendarWeek() + "/c/c" + String.format("%05d", 1) + ".htm");
+    //model.loadAllLessons(webEngine, getCalendarWeek());
+    System.out.println("finished");
+  }
+
+  public void onError(Exception e)
+  {
+    taConsole.setText(e.getMessage());
+  }
+
+  public void setTextOnTextArea(String t)
+  {
+    taConsole.setText(t);
+  }
+
+  public void onLehrer(ActionEvent event)
+  {
+    btKlassen.setDisable(false);
+    btLehrer.setDisable(true);
+    lehrer = true;
+
+    //tvDaten.getItems().clear();
+    TableColumn<String, String> col = new TableColumn<>("Kürzel");
+    col.setCellValueFactory((CellDataFeatures<String, String> s) -> (ObservableValue<String>) ScheduleModel.getKuerzel());
+    col.setCellValueFactory((CellDataFeatures<String, String> s) -> (ObservableValue<String>) Arrays.asList("asdf", "adslkf", "lksjsdlk"));
+    
+    tvDaten.getColumns().clear();
+    tvDaten.getColumns().add(col);
+    
+    ObservableList<String> data = tvDaten.getItems();
+    data.clear();
+    data.addAll(ScheduleModel.getKuerzel());
+    data.addAll(Arrays.asList("asdf", "adslkf", "lksjsdlk"));
+    
+    col.setPrefWidth(200);
+    
+    
+    
+    //tvDaten.getItems().addAll(Arrays.asList("asdf", "adslkf", "lksjsdlk"));
+  }
+
+public void onDaten(MouseEvent event)
+  {
+    int index = tvDaten.getSelectionModel().getSelectedIndex();
+    if(index >= 0)
+    {
+      System.out.println("clicked index: " + tvDaten.getItems().get(index));
+>>>>>>> origin/master
     }
 
     public void onDaten(MouseEvent event) {
