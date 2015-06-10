@@ -22,20 +22,6 @@ public class Lesson {
     private int hour;
     private int Week;
     private WeekDay weekDay;
-
-    public Lesson(Kürzel[] teachers, String subject, String klasse, String[] classrooms, int hour, int Week, WeekDay weekDay) {
-        String[] a = new String[teachers.length];
-        for (int i = 0; i < a.length; i++) {
-            a[i] = teachers[i].name();
-        }
-        this.teachers = a;
-        this.subject = subject;
-        this.klasse = klasse;
-        this.classrooms = classrooms;
-        this.hour = hour;
-        this.Week = Week;
-        this.weekDay = weekDay;
-    }
     
     public Lesson(String[] teachers, String subject, String klasse, String[] classrooms, int hour, int Week, WeekDay weekDay) {
         this.teachers = teachers;

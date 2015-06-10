@@ -195,7 +195,7 @@ public class WebBrowserTest extends Application {
         System.out.println("WebBrowserTest.printAllNodes: End");
     }
     
-    private static void printNodes(NodeList nl, int depth) {
+    public static void printNodes(NodeList nl, int depth) {
         
         for(int i = 0; i < nl.getLength(); i++) {
             Node n = nl.item(i);

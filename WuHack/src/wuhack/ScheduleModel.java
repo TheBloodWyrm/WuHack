@@ -8,8 +8,6 @@ package wuhack;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.concurrent.Worker.State;
 import javafx.scene.web.WebEngine;
 import org.w3c.dom.Document;
@@ -26,18 +24,9 @@ import org.w3c.dom.html.HTMLTableRowElement;
  */
 public class ScheduleModel {
 
-    private static LinkedList<String> classes = new LinkedList<>();
-    private Lesson[][][] timetable = new Lesson[32][5][12];
-    private List<String> kuerzel = new ArrayList<>(90);
-
-    public void addClassname(String classname, int index) {
-        index--;
-
-        if (index >= classes.size()) {
-            index = classes.size() - 1;
-            classes.add(index, classname);
-        }
-    }
+    private static List<String> classes = new ArrayList<>();
+    private static Lesson[][][] timetable = new Lesson[32][5][12];
+    private static List<String> kuerzel = new ArrayList<>(90);
 
     public Lesson[][] analyzeDoc(Document d, int calweek, int index) {
         Lesson[][] schedule = new Lesson[5][12];
@@ -53,16 +42,14 @@ public class ScheduleModel {
 
         System.out.println("FontText: " + f.getTextContent());
         String klasse = f.getTextContent();
-        classes.add(klasse);
+        
+        if(!this.classes.contains(klasse)) {
+            this.classes.add(klasse);
+        }
 
-//    for (int i = 0; i < centerChilds.getLength(); i++)
-//    {
-//      System.out.println(centerChilds.item(i).toString());
-//    }
         NodeList tables = d.getElementsByTagName("table");
 
         HTMLTableElement table = (HTMLTableElement) tables.item(0);
-//    System.out.println(tables.item(0).getTextContent());
 
         HTMLCollection rows = table.getRows();
 
@@ -76,7 +63,7 @@ public class ScheduleModel {
             for (int j = 1; j < cells.getLength(); j++) {
                 if (schedule[j - 1 + doneCells][((i - 1) / 2)] == null) {
                     System.out.println("Lesson:");
-                    //LinkedList<Kürzel> teachers = new LinkedList<>();
+                    
                     LinkedList<String> teachers = new LinkedList<>();
                     String subject = "???";
                     LinkedList<String> classrooms = new LinkedList<>();
@@ -154,17 +141,7 @@ public class ScheduleModel {
         return schedule;
     }
 
-    private Kürzel[] convertTeachers(LinkedList<Kürzel> teachers) {
-        Kürzel[] array = new Kürzel[teachers.size()];
-
-        for (int i = 0; i < teachers.size(); i++) {
-            array[i] = teachers.get(i);
-        }
-
-        return array;
-    }
-
-    private String[] convertClassrooms(LinkedList<String> classrooms) {
+    private String[] convertClassrooms(List<String> classrooms) {
         String[] array = new String[classrooms.size()];
 
         for (int i = 0; i < classrooms.size(); i++) {
@@ -174,13 +151,13 @@ public class ScheduleModel {
         return array;
     }
 
-    public Lesson[][] getTeacherLessons(String ku, Lesson[][][] le) {
+    public Lesson[][] getTeacherLessons(String ku) {
         Lesson[][] table = new Lesson[5][12];
 
-        for (int i = 0; i < le.length; i++) {
-            for (int j = 0; j < le[i].length; j++) {
-                for (int k = 0; k < le[i][j].length; k++) {
-                    Lesson l = le[i][j][k];
+        for (int i = 0; i < timetable.length; i++) {
+            for (int j = 0; j < timetable[i].length; j++) {
+                for (int k = 0; k < timetable[i][j].length; k++) {
+                    Lesson l = timetable[i][j][k];
 
                     if (l != null && containsKürzel(l.getTeachers(), ku)) {
                         int day = l.getWeekDay().ordinal();
@@ -207,7 +184,7 @@ public class ScheduleModel {
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(ScheduleModel.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("");
                 }
             }
 
@@ -254,7 +231,7 @@ public class ScheduleModel {
 
     }
 
-  public static LinkedList<String> getClasses()
+  public static List<String> getClasses()
   {
     return classes;
   }

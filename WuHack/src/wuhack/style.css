@@ -117,7 +117,8 @@
 
 .table-view .column-header .label 
 {
-    -fx-font-size: 20pt;
+    -fx-font-size: 12pt;
+    -fx-alignment: CENTER;
     -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     -fx-text-fill: white;
     -fx-alignment: center-left;

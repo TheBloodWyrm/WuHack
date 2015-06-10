@@ -22,6 +22,5 @@ public class Tester
     int wl = LocalDate.now().getDayOfYear()/7+1;
     int wc = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
     System.out.println(wl+" "+wc);
-      System.out.println(Kürzel.values().length);
   }
 }
