@@ -253,4 +253,30 @@ public class ScheduleModel {
         return ret;
 
     }
+
+  public static LinkedList<String> getClasses()
+  {
+    return classes;
+  }
+
+  public static void setClasses(LinkedList<String> classes)
+  {
+    ScheduleModel.classes = classes;
+  }
+
+  public List<String> getKuerzel()
+  {
+    return kuerzel;
+  }
+
+  public void setKuerzel(List<String> kuerzel)
+  {
+    this.kuerzel = kuerzel;
+  }
+
+  public Lesson[][][] getTimetable()
+  {
+    return timetable;
+  } 
+    
 }
