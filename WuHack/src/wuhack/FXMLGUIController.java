@@ -43,72 +43,98 @@ import javafx.util.Callback;
  *
  * @author Paul Petritsch
  */
-public class FXMLGUIController implements Initializable
-{
+public class FXMLGUIController implements Initializable {
 
-  @FXML
-  private TableView tvDaten;
-  @FXML
-  private TextArea taConsole;
-  @FXML
-  private WebView wv;
-  @FXML
-  private Button btUpdate;
+    @FXML
+    private TableView tvDaten;
+    @FXML
+    private TextArea taConsole;
+    @FXML
+    private WebView wv;
+    @FXML
+    private Button btUpdate;
 
-  @FXML
-  private ToggleButton btLehrer, btKlassen;
+    @FXML
+    private ToggleButton btLehrer, btKlassen;
 
-  public URL url;
-  private BufferedWriter writer;
-  private WebEngine webEngine;
-  private ScheduleModel model;
-  private boolean lehrer;
+    public URL url;
+    private BufferedWriter writer;
+    private WebEngine webEngine;
+    private ScheduleModel model;
+    private boolean lehrer;
 
-  private int getCalendarWeek()
-  {
-    Calendar cal = Calendar.getInstance();
-    cal.setTimeInMillis(System.currentTimeMillis());
-    int week = cal.get(Calendar.WEEK_OF_YEAR);
+    private int getCalendarWeek() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(System.currentTimeMillis());
+        int week = cal.get(Calendar.WEEK_OF_YEAR);
 
-    return week;
-  }
+        return week;
+    }
 
-  public void onUpdate(ActionEvent event)
-  {
-    FXMLPopupController pop = new FXMLPopupController();
-    FXMLLoader l = new FXMLLoader(WebBrowserTest.class.getResource("FXMLPopup.fxml"));
-    l.setController(pop);
-    Popup auth = new Popup();
+    public void onUpdate(ActionEvent event) {
+        FXMLPopupController pop = new FXMLPopupController();
+        FXMLLoader l = new FXMLLoader(WebBrowserTest.class.getResource("FXMLPopup.fxml"));
+        l.setController(pop);
+        Popup auth = new Popup();
 
-    auth.setOnHidden(new EventHandler<WindowEvent>()
-    {
+        auth.setOnHidden(new EventHandler<WindowEvent>() {
 
-      @Override
-      public void handle(WindowEvent event)
-      {
-        System.out.println("" + pop.isReady());
-        Authenticator.setDefault(new AuthenticatorTest(pop.getUserName(), pop.getPassword()));
+            @Override
+            public void handle(WindowEvent event) {
+                System.out.println("" + pop.isReady());
+                Authenticator.setDefault(new AuthenticatorTest(pop.getUserName(), pop.getPassword()));
 
-        if (pop.isReady())
-        {
-          load();
+                if (pop.isReady()) {
+                    load();
+                }
+            }
+        });
+
+        try {
+            auth.getContent().add(l.load());
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
         }
-      }
-    });
 
-    try
-    {
-      auth.getContent().add(l.load());
-    }
-    catch (IOException ex)
-    {
-      System.out.println(ex.getMessage());
+        auth.show(btUpdate.getScene().getWindow());
+
+        btUpdate.setText("Update");
+
+        DAL.download();
     }
 
-    auth.show(btUpdate.getScene().getWindow());
+    private void load() {
+        System.out.println("load");
 
-    btUpdate.setText("Update");
+        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
 
+            @Override
+            public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+                if (newValue == Worker.State.SUCCEEDED) {
+
+                    System.out.println(model.analyzeDoc(webEngine.getDocument(), getCalendarWeek(), 1)[0][0]);
+                }
+            }
+        });
+        webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + getCalendarWeek() + "/c/c" + String.format("%05d", 1) + ".htm");
+        //model.loadAllLessons(webEngine, getCalendarWeek());
+        System.out.println("finished");
+    }
+
+    public void onError(Exception e) {
+        taConsole.setText(e.getMessage());
+    }
+
+    public void setTextOnTextArea(String t) {
+        taConsole.setText(t);
+    }
+
+    public void onLehrer(ActionEvent event) {
+        btKlassen.setDisable(false);
+        btLehrer.setDisable(true);
+        lehrer = true;
+
+<<<<<<< HEAD
     DAL.download();
     
     
@@ -124,20 +150,20 @@ public class FXMLGUIController implements Initializable
       onKlassen(null);
     }
   }
+=======
+<<<<<<< HEAD
+        tvDaten.getItems().clear();
+        TableColumn<String, String> col = new TableColumn<>("Kürzel");
+    //col.setCellValueFactory((CellDataFeatures<String, String> p) -> (ObservableValue<String>) ScheduleModel.getKuerzel());
+>>>>>>> origin/master
 
-  private void load()
-  {
-    System.out.println("load");
+        col.setPrefWidth(200);
 
-    webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>()
-    {
+        tvDaten.getColumns().clear();
+        tvDaten.getColumns().add(col);
 
-      @Override
-      public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue)
-      {
-        if (newValue == Worker.State.SUCCEEDED)
-        {
-
+        tvDaten.getItems().addAll(Arrays.asList("asdf", "adslkf", "lksjsdlk"));
+=======
           System.out.println(model.analyzeDoc(webEngine.getDocument(), getCalendarWeek(), 1)[0][0]);
         }
       }
@@ -179,7 +205,9 @@ public void onDaten(MouseEvent event)
     if(index >= 0)
     {
       System.out.println("clicked index: " + tvDaten.getItems().get(index));
+>>>>>>> origin/master
     }
+<<<<<<< HEAD
     
     
   }
@@ -199,35 +227,51 @@ public void onDaten(MouseEvent event)
     }
     tvDaten.setItems(data);
   }
+=======
 
-  @Override
-        public void initialize(URL url, ResourceBundle rb)
-  {
-    btUpdate.setOnAction(this::onUpdate);
-    btLehrer.setDisable(true);
-    btLehrer.setOnAction(this::onLehrer);
-    btKlassen.setOnAction(this::onKlassen);
-    tvDaten.setOnMouseClicked(this::onDaten);
+    public void onDaten(MouseEvent event) {
+        int index = tvDaten.getSelectionModel().getSelectedIndex();
+        if (index >= 0) {
+            System.out.println("clicked index: " + tvDaten.getItems().get(index));
+        }
+    }
+>>>>>>> origin/master
 
+    public void onKlassen(ActionEvent event) {
+        btKlassen.setDisable(true);
+        btLehrer.setDisable(false);
+        lehrer = false;
+    }
+
+<<<<<<< HEAD
     model = ScheduleModel.getInstance();//new ScheduleModel();
     webEngine = wv.getEngine();
     
     onLehrer(null);
     
+=======
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        btUpdate.setOnAction(this::onUpdate);
+        btLehrer.setDisable(true);
+        btLehrer.setOnAction(this::onLehrer);
+        btKlassen.setOnAction(this::onKlassen);
+        tvDaten.setOnMouseClicked(this::onDaten);
+>>>>>>> origin/master
 
-    webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>()
-    {
+        model = ScheduleModel.getInstance();//new ScheduleModel();
+        webEngine = wv.getEngine();
 
-      @Override
-        public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue)
-      {
-        System.out.println(newValue);
-        if (newValue == Worker.State.SUCCEEDED)
-        {
+        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
 
-          //webEngine.loadContent(convertToString(HTMLModel.convertToHTML(schedule, "1AHIF", getCalendarWeek())));
-        }
-      }
-    });
-  }
+            @Override
+            public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+                System.out.println(newValue);
+                if (newValue == Worker.State.SUCCEEDED) {
+
+                    //webEngine.loadContent(convertToString(HTMLModel.convertToHTML(schedule, "1AHIF", getCalendarWeek())));
+                }
+            }
+        });
+    }
 }
