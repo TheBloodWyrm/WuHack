@@ -141,7 +141,7 @@ public class WebBrowserTest extends Application {
         for (int i = 0; i < schedule.length; i++) {
             Lesson[] day = schedule[i];
 
-      // System.out.println("lines.length = " + lines.length);
+            // System.out.println("lines.length = " + lines.length);
             // System.out.println("day.length = " + day.length);
             for (int j = 0; j < day.length; j++) {
                 Lesson lesson = day[j];
@@ -184,45 +184,91 @@ public class WebBrowserTest extends Application {
     }
 
     public static void printAllNodes(Document d) {
-        
+
         System.out.println("WebBrowserTest.printAllNodes: Start printing...");
         System.out.println(d);
 
         printNodes(d.getChildNodes(), 0);
-        
+
         System.out.println("WebBrowserTest.printAllNodes: End");
     }
-    
+
     public static void printNodes(NodeList nl, int depth) {
-        
-        for(int i = 0; i < nl.getLength(); i++) {
+
+        for (int i = 0; i < nl.getLength(); i++) {
             Node n = nl.item(i);
-            
+
             System.out.print("WebBrowserTest.printNodes: ");
-            System.out.print(depth+" ");
-            for(int j = 0; j < depth; j++) {
+            System.out.print(depth + " ");
+            for (int j = 0; j < depth; j++) {
                 System.out.print("\t");
             }
-            
-            System.out.print(n.getNodeName()+" "+n.toString());
-            
-            if(n.hasAttributes()) {
+
+            System.out.print(n.getNodeName() + " " + n.toString());
+
+            if (n.hasAttributes()) {
                 System.out.print("\t");
-                
+
                 NamedNodeMap a = n.getAttributes();
-                for(int j = 0; j < a.getLength(); j++) {
+                for (int j = 0; j < a.getLength(); j++) {
                     Node na = a.item(j);
-                    System.out.print(na.getNodeName()+":"+na.getTextContent()+" ");
+                    System.out.print(na.getNodeName() + ":" + na.getTextContent() + " ");
                 }
             }
-            
+
             System.out.println();
-            
-            if(n.hasChildNodes()) {
+
+            if (n.hasChildNodes()) {
                 printNodes(n.getChildNodes(), depth++);
             }
         }
-        
+
         depth--;
+    }
+
+    private static void printLesson(Lesson l) {
+        if (l == null) {
+            System.out.print("---\t");
+            return;
+        }
+
+        String teachers = "";
+        for (String t : l.getTeachers()) {
+            teachers = teachers + " " + t.trim();
+        }
+
+        String classrooms = "";
+        for (String t : l.getClassrooms()) {
+            classrooms = classrooms + " " + t.trim();
+        }
+
+        System.out.print(l.getHour() + " " + l.getSubject().trim() + " " + l.getKlasse().trim() + " " + teachers + " " + classrooms + "\t");
+    }
+
+    public static void printAllLessons(Lesson[][][] l) {
+        for (int i = 0; i < l.length; i++) {
+            for (int j = 0; j < l[i].length; j++) {
+                System.out.println("WebBrowserTest.printAllLessons: ");
+                for (int k = 0; k < l[i][j].length; k++) {
+                    Lesson lesson = l[i][j][k];
+
+                    printLesson(lesson);
+
+                }
+                System.out.println();
+            }
+        }
+    }
+
+    public static void printLessons(Lesson[][] l) {
+        for (int i = 0; i < l.length; i++) {
+            System.out.print("WebBrowserTest.printLessons: ");
+            for (int j = 0; j < l[i].length; j++) {
+                Lesson lesson = l[i][j];
+
+                printLesson(lesson);
+            }
+            System.out.println();
+        }
     }
 }

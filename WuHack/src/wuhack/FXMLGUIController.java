@@ -86,7 +86,7 @@ public class FXMLGUIController implements Initializable {
                 Authenticator.setDefault(new AuthenticatorTest(pop.getUserName(), pop.getPassword()));
 
                 if (pop.isReady()) {
-                    DAL.download();
+                    //DAL.download();
                     model.loadAllLessons(webEngine, getCalendarWeek());
                 }
             }
@@ -162,7 +162,7 @@ public class FXMLGUIController implements Initializable {
                 webEngine.loadContent(convertToString(HTMLModel.convertToHTML(model.getTeacherLessons(str), str, getCalendarWeek())));
             } else {
                 System.out.println("Klasse");
-                webEngine.loadContent(convertToString(HTMLModel.convertToHTML(model.getClassroomsLessons(str), str, getCalendarWeek())));
+                webEngine.loadContent(convertToString(HTMLModel.convertToHTML(model.getClassLessons(str), str, getCalendarWeek())));
             }
         }
     }

@@ -8,6 +8,9 @@ package wuhack;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
 import javafx.concurrent.Worker.State;
 import javafx.scene.web.WebEngine;
 import org.w3c.dom.Document;
@@ -50,7 +53,7 @@ public class ScheduleModel {
         
         HTMLFontElement f = (HTMLFontElement) d.getElementsByTagName("font").item(1);
 
-        System.out.println("FontText: " + f.getTextContent());
+        //System.out.println("FontText: " + f.getTextContent());
         String klasse = f.getTextContent();
         
         if(!this.classes.contains(klasse)) {
@@ -72,7 +75,7 @@ public class ScheduleModel {
 
             for (int j = 1; j < cells.getLength(); j++) {
                 if (schedule[j - 1 + doneCells][((i - 1) / 2)] == null) {
-                    System.out.println("Lesson:");
+                    //System.out.println("Lesson:");
                     
                     LinkedList<String> teachers = new LinkedList<>();
                     String subject = "???";
@@ -98,17 +101,17 @@ public class ScheduleModel {
                                 // TODO!! (derweil wird nur gelöscht)
                                 isLesson = false;
 
-                                System.out.println("No lesson: " + inRow.getTextContent());
+                                //System.out.println("No lesson: " + inRow.getTextContent());
                             } else {
                                 subject = removeSigns(inCells.item(0).getTextContent().trim());
-                                System.out.println(" " + subject);
+                                //System.out.println(" " + subject);
                             }
                         } else {
                             if (removeSigns(inCells.item(0).getTextContent().trim()).length() > 3) {
                                 // TODO!! (derweil wird nur gelöscht)
                                 isLesson = false;
 
-                                System.out.println("No lesson: " + inRow.getTextContent());
+                                //System.out.println("No lesson: " + inRow.getTextContent());
                             } else {
                                 String classroom;
 
@@ -132,7 +135,7 @@ public class ScheduleModel {
                     }
 
                     for (int k = 0; k < (Integer.parseInt(cell.getAttribute("rowspan")) / 2); k++) {
-                        System.out.println("rowspan: " + (Integer.parseInt(cell.getAttribute("rowspan")) / 2));
+                        //System.out.println("rowspan: " + (Integer.parseInt(cell.getAttribute("rowspan")) / 2));
                         if (isLesson && schedule[j - 1 + doneCells][((i - 1) / 2) + k] == null) {
                             //Lesson l = new Lesson(convertTeachers(teachers), subject, klasse, convertClassrooms(classrooms), hour + k, calweek, weekday);
                             Lesson l = new Lesson(teachers.toArray(new String[0]), subject, klasse, classrooms.toArray(new String[0]), hour + k, calweek, weekday);
@@ -140,7 +143,7 @@ public class ScheduleModel {
                         }
                     }
                 } else {
-                    System.out.println("longer lesson!");
+                    //System.out.println("longer lesson!");
                     doneCells++;
                     j--;
                 }
@@ -173,21 +176,46 @@ public class ScheduleModel {
                     if (l != null && contains(l.getTeachers(), ku)) {
 //                        int day = l.getWeekDay().ordinal();
 //                        int hour = l.getHour() - 1;
-                        System.out.println("found: " + j + " " + k);
+                        //System.out.println("found: " + j + " " + k);
                         table[j][k] = l;
                     }
                     else
                     {
-                      System.out.println("no teacher lesson: l = " + (l!=null));
+                      //System.out.println("no teacher lesson: l = " + (l!=null));
                       if(l != null)
                       {
-                        System.out.println(" contains " + ku + ": " + contains(l.getTeachers(), ku));
+                        //System.out.println(" contains " + ku + ": " + contains(l.getTeachers(), ku));
                       }
                     }
                 }
             }
         }
 
+        WebBrowserTest.printLessons(table);
+        
+        return table;
+    }
+    
+    public Lesson[][] getClassLessons(String cl) {
+        Lesson[][] table = new Lesson[5][12];
+        
+        for (int i = 0; i < timetable.length; i++) {
+            for (int j = 0; j < timetable[i].length; j++) {
+                for (int k = 0; k < timetable[i][j].length; k++) {
+                    Lesson l = timetable[i][j][k];
+
+                    if (l != null && l.getKlasse().equals(cl)) {
+                        int day = l.getWeekDay().ordinal();
+                        int hour = l.getHour() - 1;
+
+                        table[day][hour] = l;
+                    }
+                }
+            }
+        }
+        
+        WebBrowserTest.printLessons(table);
+        
         return table;
     }
     
@@ -209,27 +237,52 @@ public class ScheduleModel {
             }
         }
         
+        WebBrowserTest.printLessons(table);
+        
         return table;
     }
 
     public void loadAllLessons(WebEngine we, int week) {
         classes.clear();
         kuerzel.clear();
+        
+        we.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
 
-        for (int i = 1; i < timetable.length; i++) {
-            we.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + (week + 1) + "/c/c" + String.format("%05d", i) + ".htm");
+            int counter = 1;
+            
+            @Override
+            public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+                
+                if(newValue == State.SUCCEEDED) {
+                    timetable[counter-1] = analyzeDoc(we.getDocument(), week, counter);
 
-            while (we.getLoadWorker().getState() != State.SUCCEEDED) {
-                System.out.println(we.getLoadWorker().getState() + " " + i);
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException ex) {
-                    System.out.println("");
+                    if(counter < timetable.length-1) {
+                        counter++;
+                        we.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + (week) + "/c/c" + String.format("%05d", counter) + ".htm");
+                    } else {
+                        WebBrowserTest.printAllLessons(timetable);
+                        we.getLoadWorker().stateProperty().removeListener(this);
+                    }
                 }
             }
+        });
+        
+        we.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + (week) + "/c/c" + String.format("%05d", 1) + ".htm");
+        
+//        for (i = 1; i < timetable.length; i++) {
+//            we.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + (week) + "/c/c" + String.format("%05d", i) + ".htm");
 
-            timetable[i] = analyzeDoc(we.getDocument(), week, i);
-        }
+//            while (we.getLoadWorker().getState() != State.SUCCEEDED) {
+//                System.out.println(we.getLoadWorker().getState() + " " + i);
+//                try {
+//                    Thread.sleep(10);
+//                } catch (InterruptedException ex) {
+//                    System.out.println("");
+//                }
+//            }
+//
+//            timetable[i] = analyzeDoc(we.getDocument(), week, i);
+//        }
     }
 
     private boolean contains(String[] a, String k) {
