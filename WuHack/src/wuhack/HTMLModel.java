@@ -96,7 +96,7 @@ public class HTMLModel
       Element td = doc.createElement("td");
       td.setAttribute("id", "weekday");
       td.setTextContent(w.toString());
-      System.out.println(w.toString());
+      //System.out.println(w.toString());
       firstline.appendChild(td);
     }
 
@@ -116,7 +116,7 @@ public class HTMLModel
       {
         Lesson lesson = schedule[l][j];
 
-        System.out.println(lesson);
+        //System.out.println(lesson);
 
         if (lesson != null)
         {
@@ -145,7 +145,7 @@ public class HTMLModel
             t.appendChild(row);
           }
 
-          System.out.println(lesson.getSubject() + " " + lesson.getKlasse() + " " + lesson.getTeachers() + " " + lesson.getClassrooms());
+          //System.out.println(lesson.getSubject() + " " + lesson.getKlasse() + " " + lesson.getTeachers() + " " + lesson.getClassrooms());
           
           td.appendChild(t);
           tr.appendChild(td);

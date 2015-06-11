@@ -7,6 +7,7 @@ package wuhack;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.Authenticator;
 import java.net.HttpRetryException;
 import java.net.ProtocolException;
@@ -33,6 +34,12 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Popup;
 import javafx.stage.WindowEvent;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
 
 /**
  *
@@ -80,7 +87,7 @@ public class FXMLGUIController implements Initializable {
 
                 if (pop.isReady()) {
                     DAL.download();
-                    load();
+                    model.loadAllLessons(webEngine, getCalendarWeek());
                 }
             }
         });
@@ -152,10 +159,10 @@ public class FXMLGUIController implements Initializable {
             
             if(mode.equals("Lehrer")) { //!tbChange.getText().equals("Lehrer")
                 System.out.println("Lehrer");
-                model.getTeacherLessons(str);
+                webEngine.loadContent(convertToString(HTMLModel.convertToHTML(model.getTeacherLessons(str), str, getCalendarWeek())));
             } else {
                 System.out.println("Klasse");
-                model.getClassroomsLessons(str);
+                webEngine.loadContent(convertToString(HTMLModel.convertToHTML(model.getClassroomsLessons(str), str, getCalendarWeek())));
             }
         }
     }
@@ -195,6 +202,23 @@ public class FXMLGUIController implements Initializable {
                 tvDaten.getItems().add(new TableModel(s, ""));
             }
 
+        }
+    }
+    
+     public static String convertToString(Document doc) {
+        try {
+            StringWriter sw = new StringWriter();
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+            transformer.transform(new DOMSource(doc), new StreamResult(sw));
+            return sw.toString();
+        } catch (Exception ex) {
+            throw new RuntimeException("Error converting to String", ex);
         }
     }
 

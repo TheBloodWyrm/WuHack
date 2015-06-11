@@ -20,4 +20,10 @@ public class TableModel
   {
     return l2;
   }
+
+  @Override
+  public String toString()
+  {
+    return l1;
+  }
 }

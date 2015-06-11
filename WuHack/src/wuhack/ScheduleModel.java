@@ -162,6 +162,7 @@ public class ScheduleModel {
     }
 
     public Lesson[][] getTeacherLessons(String ku) {
+      System.out.println("Kürzel: " + ku);
         Lesson[][] table = new Lesson[5][12];
 
         for (int i = 0; i < timetable.length; i++) {
@@ -170,10 +171,18 @@ public class ScheduleModel {
                     Lesson l = timetable[i][j][k];
 
                     if (l != null && contains(l.getTeachers(), ku)) {
-                        int day = l.getWeekDay().ordinal();
-                        int hour = l.getHour() - 1;
-
-                        table[day][hour] = l;
+//                        int day = l.getWeekDay().ordinal();
+//                        int hour = l.getHour() - 1;
+                        System.out.println("found: " + j + " " + k);
+                        table[j][k] = l;
+                    }
+                    else
+                    {
+                      System.out.println("no teacher lesson: l = " + (l!=null));
+                      if(l != null)
+                      {
+                        System.out.println(" contains " + ku + ": " + contains(l.getTeachers(), ku));
+                      }
                     }
                 }
             }
@@ -207,7 +216,7 @@ public class ScheduleModel {
         classes.clear();
         kuerzel.clear();
 
-        for (int i = 1; i < timetable.length - 1; i++) {
+        for (int i = 1; i < timetable.length; i++) {
             we.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + (week + 1) + "/c/c" + String.format("%05d", i) + ".htm");
 
             while (we.getLoadWorker().getState() != State.SUCCEEDED) {
