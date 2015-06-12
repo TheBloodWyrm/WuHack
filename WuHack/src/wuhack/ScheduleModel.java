@@ -49,7 +49,7 @@ public class ScheduleModel {
             return null;
         }
         
-        WebBrowserTest.printAllNodes(d);
+        //WebBrowserTest.printAllNodes(d);
         
         HTMLFontElement f = (HTMLFontElement) d.getElementsByTagName("font").item(1);
 
@@ -121,7 +121,7 @@ public class ScheduleModel {
                                     classroom = inCells.item(1).getTextContent().trim();
                                 }
 
-                                System.out.println(" " + removeSigns(inCells.item(0).getTextContent().trim()) + " - - - " + classroom);
+                                //System.out.println(" " + removeSigns(inCells.item(0).getTextContent().trim()) + " - - - " + classroom);
                                 String kuerzel = removeSigns(inCells.item(0).getTextContent().trim()); //.replace("---", "NIEMAND");
                                 //teachers.add(Kürzel.valueOf(kuerzel));
                                 teachers.add(kuerzel);
@@ -165,8 +165,9 @@ public class ScheduleModel {
     }
 
     public Lesson[][] getTeacherLessons(String ku) {
-      System.out.println("Kürzel: " + ku);
+      //System.out.println("Kürzel: " + ku);
         Lesson[][] table = new Lesson[5][12];
+        
 
         for (int i = 0; i < timetable.length; i++) {
             for (int j = 0; j < timetable[i].length; j++) {
@@ -181,11 +182,8 @@ public class ScheduleModel {
                     }
                     else
                     {
-                      //System.out.println("no teacher lesson: l = " + (l!=null));
-                      if(l != null)
-                      {
-                        //System.out.println(" contains " + ku + ": " + contains(l.getTeachers(), ku));
-                      }
+//                      if(l != null)
+//                        table[j][k] = new Lesson(new String[] {"---"}, "---", "---", new String[] {"---"}, k, 0, WeekDay.values()[j]);
                     }
                 }
             }
