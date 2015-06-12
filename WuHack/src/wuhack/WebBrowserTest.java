@@ -228,21 +228,21 @@ public class WebBrowserTest extends Application {
 
     private static void printLesson(Lesson l) {
         if (l == null) {
-            System.out.print("---\t");
+            System.out.println("---");
             return;
         }
 
         String teachers = "";
         for (String t : l.getTeachers()) {
-            teachers = teachers + " " + t.trim();
+            teachers = teachers + "\t" + t.trim();
         }
 
         String classrooms = "";
         for (String t : l.getClassrooms()) {
-            classrooms = classrooms + " " + t.trim();
+            classrooms = classrooms + "\t" + t.trim();
         }
 
-        System.out.print(l.getHour() + " " + l.getSubject().trim() + " " + l.getKlasse().trim() + " " + teachers + " " + classrooms + "\t");
+        System.out.println(l.getHour() + " " + l.getSubject().trim() + "\t" + l.getKlasse().replace("\n", "").trim() + "\t" + teachers + "\t" + classrooms + " ");
     }
 
     public static void printAllLessons(Lesson[][][] l) {
@@ -262,7 +262,7 @@ public class WebBrowserTest extends Application {
 
     public static void printLessons(Lesson[][] l) {
         for (int i = 0; i < l.length; i++) {
-            System.out.print("WebBrowserTest.printLessons: ");
+            System.out.println("WebBrowserTest.printLessons: ");
             for (int j = 0; j < l[i].length; j++) {
                 Lesson lesson = l[i][j];
 
