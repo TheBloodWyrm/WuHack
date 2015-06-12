@@ -10,7 +10,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TitledPane collapsible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="120.0" minWidth="200.0" prefHeight="170.0" prefWidth="400.0" text="Authentication" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<TitledPane collapsible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="120.0" minWidth="200.0" prefHeight="200.0" prefWidth="400.0" text="Authentication" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    
     <stylesheets>
         <URL value="@style.css" />
