@@ -90,7 +90,7 @@ public class ScheduleModel {
                     hour = (i - 1) / 2 + 1;
 
                     HTMLTableCellElement cell = (HTMLTableCellElement) cells.item(j);
-
+                    
                     HTMLTableElement inTable = (HTMLTableElement) cell.getChildNodes().item(0);
                     HTMLCollection inRows = inTable.getRows();
 

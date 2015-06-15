@@ -10,14 +10,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TitledPane collapsible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="120.0" minWidth="200.0" prefHeight="200.0" prefWidth="400.0" text="Authentication" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<TitledPane collapsible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="120.0" minWidth="200.0" prefHeight="170.0" prefWidth="400.0" text="Authentication" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
     
     <content>
-      <GridPane fx:id="gp" prefHeight="160.0" prefWidth="326.0">
+      <GridPane fx:id="gp" prefHeight="146.0" prefWidth="398.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="50.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="200.0" />
@@ -28,18 +28,18 @@
           <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="lbUsername" text="Username" prefWidth="200"/>
-            <Label fx:id="lbPassword" text="Password" GridPane.rowIndex="1" prefWidth="200"/>
+            <Label fx:id="lbUsername" prefWidth="200" text="Username" />
+            <Label fx:id="lbPassword" prefWidth="200" text="Password" GridPane.rowIndex="1" />
             <TextField fx:id="tfUsername" promptText="User" GridPane.columnIndex="1" />
             <PasswordField fx:id="pfPassword" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="185.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                <children>
-                  <Button fx:id="btAuth" mnemonicParsing="false" prefHeight="31.0" prefWidth="130.0" text="Authenticate" textAlignment="CENTER">
+                  <Button fx:id="btAuth" mnemonicParsing="false" prefHeight="33.0" prefWidth="133.0" text="Authenticate" textAlignment="CENTER">
                      <!-- <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin> -->
                   </Button>
-                  <Button fx:id="btCancel" mnemonicParsing="false" prefHeight="31.0" prefWidth="118.0" text="Cancel" textAlignment="CENTER">
+                  <Button fx:id="btCancel" mnemonicParsing="false" prefHeight="33.0" prefWidth="110.0" text="Cancel" textAlignment="CENTER">
                      <!-- <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin> -->

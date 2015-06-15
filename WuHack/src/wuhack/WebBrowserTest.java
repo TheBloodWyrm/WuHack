@@ -32,6 +32,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.html.HTMLCollection;
+import org.w3c.dom.html.HTMLTableCellElement;
+import org.w3c.dom.html.HTMLTableElement;
+import org.w3c.dom.html.HTMLTableRowElement;
 
 /**
  *
@@ -270,5 +274,39 @@ public class WebBrowserTest extends Application {
             }
             System.out.println();
         }
+    }
+    
+    public static void analyzeCell(String str) {
+        String[] a = str.split("\n");
+        
+        System.out.print(a.length+"_");
+        for (String s : a) {
+            String[] a1 = s.split(" ");
+            
+            for (String s1 : a1) {
+                System.out.print(s1+"_");
+            }
+        }
+        System.out.println();
+    }
+    
+    public static void analyzeCell(HTMLTableElement table) {
+        HTMLCollection rows = table.getRows();
+        
+        System.out.println("WebBrowserTest.analyzeCell: size: "+rows.getLength());
+        
+        for (int i = 0; i < rows.getLength(); i++) {
+            HTMLTableRowElement row = (HTMLTableRowElement) rows.item(i);
+            
+            HTMLCollection cells = row.getCells();
+            
+            for (int j = 0; j < cells.getLength(); j++) {
+                HTMLTableCellElement cell = (HTMLTableCellElement) cells.item(i);
+                if(cell != null)
+                System.out.print(cell.getTextContent().trim()+"_");
+            }
+        }
+        
+        System.out.println();
     }
 }
