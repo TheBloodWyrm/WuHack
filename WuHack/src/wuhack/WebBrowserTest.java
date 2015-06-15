@@ -301,7 +301,7 @@ public class WebBrowserTest extends Application {
             HTMLCollection cells = row.getCells();
             
             for (int j = 0; j < cells.getLength(); j++) {
-                HTMLTableCellElement cell = (HTMLTableCellElement) cells.item(i);
+                HTMLTableCellElement cell = (HTMLTableCellElement) cells.item(j);
                 if(cell != null)
                 System.out.print(cell.getTextContent().trim()+"_");
             }
