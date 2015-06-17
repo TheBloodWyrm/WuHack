@@ -5,19 +5,14 @@
  */
 package wuhack;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.Authenticator;
-import java.net.HttpRetryException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -159,10 +154,10 @@ public class FXMLGUIController implements Initializable {
             
             if(mode.equals("Lehrer")) { //!tbChange.getText().equals("Lehrer")
                 System.out.println("Lehrer");
-                webEngine.loadContent(convertToString(HTMLModel.convertToHTML(model.getTeacherLessons(str), str, getCalendarWeek())));
+                webEngine.loadContent(convertToString(HTMLModel.convertToHTMLv2(model.getTeacherLessons(str), str, getCalendarWeek())));
             } else {
                 System.out.println("Klasse");
-                webEngine.loadContent(convertToString(HTMLModel.convertToHTML(model.getClassLessons(str), str, getCalendarWeek())));
+                webEngine.loadContent(convertToString(HTMLModel.convertToHTMLv2(model.getClassLessons(str), str, getCalendarWeek())));
             }
         }
     }

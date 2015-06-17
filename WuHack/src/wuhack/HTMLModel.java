@@ -2,11 +2,15 @@ package wuhack;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLTableCellElement;
 import org.w3c.dom.html.HTMLTableElement;
@@ -163,41 +167,115 @@ public class HTMLModel
     return doc;
   }
 
+  private static Node getElementByID(NodeList nl, String id) {
+      Node node = null;
+      
+      for (int i = 0; i < nl.getLength(); i++) {
+          Node n = nl.item(i);
+          
+          if(n.hasAttributes()) {
+              Node idNode = n.getAttributes().getNamedItem("id");
+              
+              if(idNode != null && idNode.getTextContent().equals(id)) {
+                  node = n;
+                  System.out.println("Found! "+n.getNodeName()+" "+ n.getNodeValue());
+                  break;
+              }
+          }
+          
+          if(n.hasChildNodes()) {
+              node = getElementByID(n.getChildNodes(), id);
+          }
+          
+      }
+      return node;
+  }
+  
   public static Document convertToHTMLv2(Lesson[][] schedule, String title, int calweek)
   {
     Document d = null;
     
     try
     {
-      d = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse("schedule_template.html");
+        d = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(HTMLModel.class.getResourceAsStream("schedule_template.html"));
     }
     catch (Exception ex)
     {
       System.out.println("Could not Build: "+ex.getMessage());
       return null;
     }
-
-    d.getElementById("title").setTextContent(title);
+    
+//    d.getElementById("klasse").setTextContent(title);
+    getElementByID(d.getChildNodes(), "klasse").setTextContent(title); 
     
     String[] days = getDays(calweek);
-    d.getElementById("date").setTextContent(days[0]+" - "+days[1]);
+//    d.getElementById("date").setTextContent(days[0]+" - "+days[1]);
+    Node date = getElementByID(d.getChildNodes(), "date");
+    date.setTextContent(days[0]+" - "+days[1]);
     
-    HTMLTableElement table = (HTMLTableElement) d.getElementById("table");
-    HTMLCollection rows = table.getRows();
-    
+//    HTMLTableElement table = (HTMLTableElement) d.getElementById("table");
+//    HTMLTableElement table = (HTMLTableElement) getElementByID(d.getChildNodes(), "schedule");
+//    HTMLTableElement table = (HTMLTableElement) date.getNextSibling();
+//    HTMLCollection rows = table.getRows();
+    NodeList rows = getElementByID(d.getChildNodes(), "schedule").getChildNodes().item(1).getChildNodes();
     for (int i = 1; i < rows.getLength(); i++)
     {
-      HTMLTableRowElement row = (HTMLTableRowElement) rows.item(i);
-      HTMLCollection cells = row.getCells();
-      
+//      HTMLTableRowElement row = (HTMLTableRowElement) rows.item(i);
+//      HTMLCollection cells = row.getCells();
+      Node row = rows.item(i);
+      NodeList cells = row.getChildNodes();
       for (int j = 0; j < cells.getLength(); j++)
       {
-        HTMLTableElement lessonTable = (HTMLTableElement) cells.item(j).getFirstChild();
-        HTMLCollection lessonRows = lessonTable.getRows();
+//        HTMLTableElement lessonTable = (HTMLTableElement) cells.item(j).getFirstChild();
+//        HTMLCollection lessonRows = lessonTable.getRows();
+        Node lessonTable = cells.item(j);
+        NodeList lessonRows = lessonTable.getChildNodes();
+        
+        if(schedule[j][i] == null) {
+            continue;
+        }
         
         Lesson lesson = schedule[j][i];
         
         lessonRows.item(0).setTextContent(lesson.getSubject());
+        
+//        HTMLTableRowElement r1 = (HTMLTableRowElement) lessonRows.item(1);
+//        HTMLTableCellElement c1 = (HTMLTableCellElement) d.createElement("td");
+//        c1.setTextContent(lesson.getTeachers()[0]);
+//        HTMLTableCellElement c2 = (HTMLTableCellElement) d.createElement("td");
+//        c2.setTextContent(lesson.getClassrooms()[0]);
+//        r1.appendChild(c1);
+//        r1.appendChild(c2);
+        
+        Node r1 = lessonRows.item(1);
+        Node c1 = d.createElement("td");
+        c1.setTextContent(lesson.getTeachers()[0]);
+        Node c2 = d.createElement("td");
+        c2.setTextContent(lesson.getClassrooms()[0]);
+        r1.appendChild(c1);
+        r1.appendChild(c2);
+        
+          System.out.println(c1.getClass().getName());
+        
+          for (int k = 1; k < lesson.getTeachers().length; k++) {
+//              HTMLTableRowElement r = (HTMLTableRowElement) d.createElement("tr");
+//              HTMLTableCellElement cellTeacher = (HTMLTableCellElement) d.createElement("td");
+//              cellTeacher.setTextContent(lesson.getTeachers()[k]);
+//              HTMLTableCellElement cellClassroom = (HTMLTableCellElement) d.createElement("td");
+//              cellClassroom.setTextContent(lesson.getClassrooms()[k]);
+//              r.appendChild(cellTeacher);
+//              r.appendChild(cellClassroom);
+//              lessonTable.appendChild(r);
+              
+              Node r = d.createElement("tr");
+              Node cellTeacher = d.createElement("td");
+              cellTeacher.setTextContent(lesson.getTeachers()[k]);
+              Node cellClassroom = d.createElement("td");
+              cellClassroom.setTextContent(lesson.getClassrooms()[k]);
+              r.appendChild(cellTeacher);
+              r.appendChild(cellClassroom);
+              lessonTable.appendChild(r);
+          }
         
       }
     }

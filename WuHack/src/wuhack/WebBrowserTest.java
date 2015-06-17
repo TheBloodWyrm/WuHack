@@ -208,7 +208,7 @@ public class WebBrowserTest extends Application {
                 System.out.print("\t");
             }
 
-            System.out.print(n.getNodeName() + " " + n.toString());
+            System.out.print(n.getNodeName() + " " + n.getClass().getName());
 
             if (n.hasAttributes()) {
                 System.out.print("\t");
