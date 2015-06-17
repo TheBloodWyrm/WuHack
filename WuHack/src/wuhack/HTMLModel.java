@@ -2,13 +2,15 @@ package wuhack;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.html.HTMLCollection;
+import org.w3c.dom.html.HTMLTableCellElement;
+import org.w3c.dom.html.HTMLTableElement;
+import org.w3c.dom.html.HTMLTableRowElement;
 
 public class HTMLModel
 {
@@ -117,7 +119,6 @@ public class HTMLModel
         Lesson lesson = schedule[l][j];
 
         //System.out.println(lesson);
-
         if (lesson != null)
         {
           Element td = doc.createElement("td");
@@ -133,20 +134,19 @@ public class HTMLModel
           for (int i = 0; i < lesson.getTeachers().length; i++)
           {
             Element row = doc.createElement("tr");
-            
+
             Element teacher = doc.createElement("td");
             teacher.setTextContent(lesson.getTeachers()[i]);
             row.appendChild(teacher);
-            
+
             Element classroom = doc.createElement("td");
             classroom.setTextContent(lesson.getClassrooms()[i]);
             row.appendChild(classroom);
-            
+
             t.appendChild(row);
           }
 
           //System.out.println(lesson.getSubject() + " " + lesson.getKlasse() + " " + lesson.getTeachers() + " " + lesson.getClassrooms());
-          
           td.appendChild(t);
           tr.appendChild(td);
         }
@@ -159,8 +159,50 @@ public class HTMLModel
     table.appendChild(tablebody);
     centernode.appendChild(table);
     body.appendChild(centernode);
-    
+
     return doc;
+  }
+
+  public static Document convertToHTMLv2(Lesson[][] schedule, String title, int calweek)
+  {
+    Document d = null;
+    
+    try
+    {
+      d = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse("schedule_template.html");
+    }
+    catch (Exception ex)
+    {
+      System.out.println("Could not Build: "+ex.getMessage());
+      return null;
+    }
+
+    d.getElementById("title").setTextContent(title);
+    
+    String[] days = getDays(calweek);
+    d.getElementById("date").setTextContent(days[0]+" - "+days[1]);
+    
+    HTMLTableElement table = (HTMLTableElement) d.getElementById("table");
+    HTMLCollection rows = table.getRows();
+    
+    for (int i = 1; i < rows.getLength(); i++)
+    {
+      HTMLTableRowElement row = (HTMLTableRowElement) rows.item(i);
+      HTMLCollection cells = row.getCells();
+      
+      for (int j = 0; j < cells.getLength(); j++)
+      {
+        HTMLTableElement lessonTable = (HTMLTableElement) cells.item(j).getFirstChild();
+        HTMLCollection lessonRows = lessonTable.getRows();
+        
+        Lesson lesson = schedule[j][i];
+        
+        lessonRows.item(0).setTextContent(lesson.getSubject());
+        
+      }
+    }
+    
+    return d;
   }
 
   private static String[] getDays(int calweek)

@@ -181,3 +181,13 @@
     -fx-padding: 5;
 }
 
+.number {
+  background-color:#555A5E;
+  color:#FFFFFF;
+  padding:5px;
+  text-align: center;
+}
+
+.subject {
+  font-weight:bold;
+}
