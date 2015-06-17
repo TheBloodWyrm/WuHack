@@ -67,4 +67,22 @@ public class DAL {
 
         return week;
     }
+    
+    public static String getFileContent(String file) {
+        StringBuilder sb = new StringBuilder();
+        
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(DAL.class.getResourceAsStream(file)));
+            
+            String line;
+            while((line = br.readLine()) != null) {
+                sb.append(line+"\n");
+            }
+            br.close();
+        } catch (IOException ex) {
+            System.out.println("File Not Found: "+ex.getMessage());
+        }
+        
+        return sb.toString();
+    }
 }

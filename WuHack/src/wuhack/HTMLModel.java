@@ -1,9 +1,18 @@
 package wuhack;
 
+import java.io.File;
+import java.net.URI;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.concurrent.Worker;
+import javafx.concurrent.Worker.State;
+import javafx.event.EventHandler;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebEvent;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLDocument.HTMLReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -197,7 +206,7 @@ public class HTMLModel
     
     try
     {
-        d = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(HTMLModel.class.getResourceAsStream("schedule_template.html"));
+        d = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(HTMLModel.class.getResourceAsStream("schedule_template.html"));   
     }
     catch (Exception ex)
     {
