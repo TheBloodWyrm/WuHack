@@ -11,6 +11,8 @@ import java.net.Authenticator;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -148,16 +150,18 @@ public class FXMLGUIController implements Initializable {
         int index = tvDaten.getSelectionModel().getSelectedIndex();
         if (index >= 0) {
             String str = tvDaten.getItems().get(index).toString();
-            System.out.println("clicked index: " + index + str);
+            System.out.println("clicked index: " + index +" "+ str);
             
             String mode = ((TableColumn) tvDaten.getColumns().get(0)).getText();
             
             if(mode.equals("Lehrer")) { //!tbChange.getText().equals("Lehrer")
                 System.out.println("Lehrer");
-                webEngine.loadContent(convertToString(HTMLModel.convertToHTMLv2(model.getTeacherLessons(str), str, getCalendarWeek())));
+                //webEngine.loadContent(convertToString(HTMLModel.convertToHTMLv3(model.getTeacherLessons(str), str, getCalendarWeek())));
+                HTMLModel.convertToHTMLv3(webEngine, model.getTeacherLessons(str), str, getCalendarWeek());
             } else {
                 System.out.println("Klasse");
-                webEngine.loadContent(convertToString(HTMLModel.convertToHTMLv2(model.getClassLessons(str), str, getCalendarWeek())));
+                //webEngine.loadContent(convertToString(HTMLModel.convertToHTMLv3(model.getClassLessons(str), str, getCalendarWeek())));
+                HTMLModel.convertToHTMLv3(webEngine, model.getClassroomsLessons(str), str, getCalendarWeek());
             }
         }
     }
