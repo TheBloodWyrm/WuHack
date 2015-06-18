@@ -146,7 +146,7 @@ public class FXMLGUIController implements Initializable {
             } else {
                 System.out.println("Klasse");
                 //webEngine.loadContent(convertToString(HTMLModel.convertToHTMLv3(model.getClassLessons(str), str, getCalendarWeek())));
-                HTMLModel.convertToHTMLv3(webEngine, model.getClassroomsLessons(str), str, getCalendarWeek());
+                HTMLModel.convertToHTMLv3(webEngine, model.getClassLessons(str), str, getCalendarWeek());
             }
         }
     }
