@@ -1,20 +1,11 @@
 package wuhack;
 
-import java.io.File;
-import java.net.URI;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker;
 import javafx.concurrent.Worker.State;
-import javafx.event.EventHandler;
 import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebEvent;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLDocument.HTMLReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -284,7 +275,7 @@ public class HTMLModel {
     }
 
     public static final String SCHEDULE_TEMPLATE = DAL.getFileContent("schedule_template.html");
-    
+
     public static Document convertToHTMLv3(WebEngine we, Lesson[][] schedule, String title, int calweek) {
         //WebEngine we = new WebEngine();
         we.loadContent(SCHEDULE_TEMPLATE);
@@ -299,7 +290,7 @@ public class HTMLModel {
                 }
             }
         });
-        
+
         return we.getDocument();
     }
 
@@ -321,29 +312,37 @@ public class HTMLModel {
 
             for (int j = 1; j < cells.getLength(); j++) {
                 HTMLTableElement lessonTable = (HTMLTableElement) cells.item(j).getChildNodes().item(1);
-                HTMLCollection lessonRows = lessonTable.getRows();
+                //HTMLCollection lessonRows = lessonTable.getRows();
+                lessonTable.setTextContent("");
+                
+                for (int k = 0; k < lessonTable.getRows().getLength(); k++) {
+                    lessonTable.removeChild(lessonTable.getChildNodes().item(k));
+                    
+                }
+                
+                if (schedule[j - 1][i - 1] == null) {
+//                    HTMLTableRowElement subjectRow = (HTMLTableRowElement) lessonRows.item(0);
+//                    HTMLTableCellElement subjectCell = (HTMLTableCellElement) subjectRow.getCells().item(0);
+//                    subjectCell.setTextContent("");
+//
+//                    for (int k = 0; k < lessonRows.getLength() - 1; k++) {
+//                        lessonTable.deleteRow(1);
+//                    }
 
-                if (schedule[j-1][i-1] == null) {
                     continue;
                 }
 
-                for (int k = 0; k < lessonRows.getLength(); k++) {
-                    lessonTable.deleteRow(0);
-                }
-                
-                Lesson lesson = schedule[j-1][i-1];
-                
-                lessonTable.insertRow(0).setTextContent(lesson.getSubject());
+                Lesson lesson = schedule[j - 1][i - 1];
 
-//                lessonRows.item(0).setTextContent(lesson.getSubject());
-
-//                HTMLTableRowElement r1 = (HTMLTableRowElement) lessonRows.item(1);
-//                HTMLTableCellElement c1 = (HTMLTableCellElement) d.createElement("td");
-//                c1.setTextContent(lesson.getTeachers()[0]);
-//                HTMLTableCellElement c2 = (HTMLTableCellElement) d.createElement("td");
-//                c2.setTextContent(lesson.getClassrooms()[0]);
-//                r1.appendChild(c1);
-//                r1.appendChild(c2);
+                HTMLTableRowElement subjectRow = (HTMLTableRowElement) d.createElement("tr"); //(HTMLTableRowElement) lessonRows.item(0);
+                HTMLTableCellElement subjectCell = (HTMLTableCellElement) d.createElement("td"); //subjectRow.getCells().item(0);
+                subjectCell.setTextContent(lesson.getSubject());
+                subjectRow.appendChild(subjectCell);
+                lessonTable.appendChild(subjectRow);
+                
+//                for (int k = 0; k < lessonRows.getLength() - 1; k++) {
+//                    lessonTable.deleteRow(1);
+//                }
 
                 for (int k = 0; k < lesson.getTeachers().length; k++) {
                     HTMLTableRowElement r = (HTMLTableRowElement) d.createElement("tr");
@@ -357,8 +356,6 @@ public class HTMLModel {
                 }
             }
         }
-        
-        //WebBrowserTest.printAllNodes(d);
     }
 
     private static String[] getDays(int calweek) {

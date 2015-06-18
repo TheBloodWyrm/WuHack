@@ -11,8 +11,6 @@ import java.net.Authenticator;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -133,19 +131,6 @@ public class FXMLGUIController implements Initializable {
         taConsole.setText(t);
     }
 
-//    public void onLehrer(ActionEvent event) {
-//        //btKlassen.setDisable(false);
-//        //btLehrer.setDisable(true);
-//        lehrer = true;
-//
-//        ((TableColumn<TableModel, String>) tvDaten.getColumns().get(0)).setText("Lehrer");
-//        tvDaten.getItems().clear();
-//        ObservableList<TableModel> data = FXCollections.observableArrayList();
-//        for (String s : ScheduleModel.getInstance().getKuerzel()) {
-//            data.add(new TableModel(s, ""));
-//        }
-//        tvDaten.setItems(data);
-//    }
     public void onDaten(MouseEvent event) {
         int index = tvDaten.getSelectionModel().getSelectedIndex();
         if (index >= 0) {
@@ -166,19 +151,6 @@ public class FXMLGUIController implements Initializable {
         }
     }
 
-//    public void onKlassen(ActionEvent event) {
-//        //btKlassen.setDisable(true);
-//        //btLehrer.setDisable(false);
-//        lehrer = false;
-//
-//        ((TableColumn<TableModel, String>) tvDaten.getColumns().get(0)).setText("Klassen");
-//        tvDaten.getItems().clear();
-//        ObservableList<TableModel> data = FXCollections.observableArrayList();
-//        for (String s : ScheduleModel.getInstance().getClasses()) {
-//            data.add(new TableModel(s, ""));
-//        }
-//        tvDaten.setItems(data);
-//    }
     private void onChange(ActionEvent e) {
 
         if (tbChange.getText().equals("Lehrer")) {
@@ -226,7 +198,7 @@ public class FXMLGUIController implements Initializable {
         btUpdate.setOnAction(this::onUpdate);
         tbChange.setOnAction(this::onChange);
         tvDaten.setOnMouseClicked(this::onDaten);
-
+        
         model = ScheduleModel.getInstance();
         webEngine = wv.getEngine();
     }
