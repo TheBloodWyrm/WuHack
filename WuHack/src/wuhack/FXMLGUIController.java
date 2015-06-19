@@ -91,6 +91,21 @@ public class FXMLGUIController implements Initializable
         {
           //DAL.download();
           model.loadAllLessons(webEngine, getCalendarWeek());
+
+          String mode = ((TableColumn) tvDaten.getColumns().get(0)).getText();
+          switch (mode)
+          {
+            case "Klassen":
+              onKlassen(null);
+              break;
+            case "Lehrer":
+              onLehrer(null);
+              break;
+            case "Räume":
+              onRaeume(null);
+              break;
+          }
+
         }
       }
     });
@@ -107,6 +122,7 @@ public class FXMLGUIController implements Initializable
     auth.show(btUpdate.getScene().getWindow());
 
     btUpdate.setText("Update");
+
   }
 
   private void load()
@@ -123,11 +139,10 @@ public class FXMLGUIController implements Initializable
         {
 
           System.out.println(model.analyzeDoc(webEngine.getDocument(), getCalendarWeek(), 1)[0][0]);
-          
-          
+
           String mode = ((TableColumn) tvDaten.getColumns().get(0)).getText();
-          
-          switch(mode)
+
+          switch (mode)
           {
             case "Klassen":
               onKlassen(null);
@@ -139,7 +154,7 @@ public class FXMLGUIController implements Initializable
               onRaeume(null);
               break;
           }
-          
+
         }
       }
     });
@@ -167,19 +182,19 @@ public class FXMLGUIController implements Initializable
       System.out.println("clicked index: " + index + " " + str);
 
       String mode = ((TableColumn) tvDaten.getColumns().get(0)).getText();
-      
-      switch(mode)
-          {
-            case "Klassen":
-              HTMLModel.convertToHTMLv3(webEngine, model.getClassLessons(str), str, getCalendarWeek());
-              break;
-            case "Lehrer":
-              HTMLModel.convertToHTMLv3(webEngine, model.getTeacherLessons(str), str, getCalendarWeek());
-              break;
-            case "Räume":
-              HTMLModel.convertToHTMLv3(webEngine, model.getClassroomLessons(str), str, getCalendarWeek());
-              break;
-          }
+
+      switch (mode)
+      {
+        case "Klassen":
+          HTMLModel.convertToHTMLv3(webEngine, model.getClassLessons(str), str, getCalendarWeek());
+          break;
+        case "Lehrer":
+          HTMLModel.convertToHTMLv3(webEngine, model.getTeacherLessons(str), str, getCalendarWeek());
+          break;
+        case "Räume":
+          HTMLModel.convertToHTMLv3(webEngine, model.getClassroomLessons(str), str, getCalendarWeek());
+          break;
+      }
     }
   }
 
@@ -213,53 +228,52 @@ public class FXMLGUIController implements Initializable
 //
 //    }
 //  }
-
   private void onKlassen(ActionEvent event)
   {
     enableBut(0);
-    
-    ((TableColumn<TableModel, String>) tvDaten.getColumns().get(0)).setText("Klassen");
-      tvDaten.getItems().clear();
 
-      List<String> data = model.getClasses();
-      // data.sort((s1, s2) -> s1.compareToIgnoreCase(s2));
-      
-      for (String s : data)
-      {
-        tvDaten.getItems().add(new TableModel(s, ""));
-      }
+    ((TableColumn<TableModel, String>) tvDaten.getColumns().get(0)).setText("Klassen");
+    tvDaten.getItems().clear();
+
+    List<String> data = model.getClasses();
+    // data.sort((s1, s2) -> s1.compareToIgnoreCase(s2));
+
+    for (String s : data)
+    {
+      tvDaten.getItems().add(new TableModel(s, ""));
+    }
   }
 
   private void onLehrer(ActionEvent event)
   {
     enableBut(1);
-    
-    ((TableColumn<TableModel, String>) tvDaten.getColumns().get(0)).setText("Lehrer");
-      tvDaten.getItems().clear();
 
-      List<String> data = model.getKuerzel();
-      data.sort((s1, s2) -> s1.compareToIgnoreCase(s2));
-      
-      for (String s : data)
-      {
-        tvDaten.getItems().add(new TableModel(s, ""));
-      }
+    ((TableColumn<TableModel, String>) tvDaten.getColumns().get(0)).setText("Lehrer");
+    tvDaten.getItems().clear();
+
+    List<String> data = model.getKuerzel();
+    data.sort((s1, s2) -> s1.compareToIgnoreCase(s2));
+
+    for (String s : data)
+    {
+      tvDaten.getItems().add(new TableModel(s, ""));
+    }
   }
 
   private void onRaeume(ActionEvent event)
   {
     enableBut(2);
-    
-    ((TableColumn<TableModel, String>) tvDaten.getColumns().get(0)).setText("Räume");
-      tvDaten.getItems().clear();
 
-      List<String> data = model.getClassrooms();
-      data.sort((s1, s2) -> s1.compareToIgnoreCase(s2));
-      
-      for (String s : data)
-      {
-        tvDaten.getItems().add(new TableModel(s, ""));
-      }
+    ((TableColumn<TableModel, String>) tvDaten.getColumns().get(0)).setText("Räume");
+    tvDaten.getItems().clear();
+
+    List<String> data = model.getClassrooms();
+    data.sort((s1, s2) -> s1.compareToIgnoreCase(s2));
+
+    for (String s : data)
+    {
+      tvDaten.getItems().add(new TableModel(s, ""));
+    }
   }
 
   private void enableBut(int index)
@@ -312,6 +326,8 @@ public class FXMLGUIController implements Initializable
     btKlassen.setOnAction(this::onKlassen);
     btLehrer.setOnAction(this::onLehrer);
     btRaeume.setOnAction(this::onRaeume);
+
+    btKlassen.setDisable(true);
 
     model = ScheduleModel.getInstance();
     webEngine = wv.getEngine();

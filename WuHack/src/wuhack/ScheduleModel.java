@@ -160,7 +160,7 @@ public class ScheduleModel
 
                 classrooms.add(classroom);
 
-                if (!this.classrooms.contains(classroom) && !classroom.equals("???"))
+                if (!this.classrooms.contains(classroom) && !classroom.equals("???") && !classroom.equals("---"))
                 {
                   this.classrooms.add(classroom);
                 }
