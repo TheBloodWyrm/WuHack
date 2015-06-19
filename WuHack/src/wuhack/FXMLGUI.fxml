@@ -26,23 +26,45 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       </rowConstraints>
       <children>
-        <StackPane>
-          <children>
-          <ToggleButton fx:id="tbChange" mnemonicParsing="false" prefHeight="33.0" prefWidth="104.0" text="Lehrer">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="selection" />
-                     </toggleGroup>
-                  </ToggleButton>
-          </children>
-          <GridPane.margin>
-            <Insets bottom="10.0" top="10.0" />
-          </GridPane.margin>
-        </StackPane>
         <StackPane GridPane.columnIndex="1">
           <children>
             <Label text="Stundenplan" GridPane.columnIndex="2" />
           </children>
         </StackPane>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+              <StackPane>
+                <GridPane.margin>
+                  <Insets bottom="10.0" top="10.0" />
+                </GridPane.margin>
+                     <children>
+                        <ToggleButton fx:id="btKlassen" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mnemonicParsing="false" text="Klassen" />
+                     </children>
+              </StackPane>
+                  <StackPane GridPane.columnIndex="2">
+                     <children>
+                        <ToggleButton fx:id="btRaeume" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Räume" GridPane.columnIndex="1" />
+                     </children>
+                  </StackPane>
+                  <StackPane GridPane.columnIndex="1">
+                     <children>
+                <ToggleButton fx:id="btLehrer" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="33.0" prefWidth="104.0" text="Lehrer" GridPane.columnIndex="1">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="selection" />
+                           </toggleGroup>
+                        </ToggleButton>
+                     </children>
+                  </StackPane>
+               </children>
+            </GridPane>
       </children>
     </GridPane>
   </top>

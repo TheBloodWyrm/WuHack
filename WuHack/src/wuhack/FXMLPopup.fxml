@@ -10,7 +10,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TitledPane collapsible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="120.0" minWidth="200.0" prefHeight="170.0" prefWidth="400.0" text="Authentication" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<TitledPane collapsible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="120.0" minWidth="200.0" prefHeight="205.0" prefWidth="404.0" text="Authentication" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    
     <stylesheets>
         <URL value="@style.css" />
@@ -26,29 +26,48 @@
           <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label fx:id="lbUsername" prefWidth="200" text="Username" />
             <Label fx:id="lbPassword" prefWidth="200" text="Password" GridPane.rowIndex="1" />
             <TextField fx:id="tfUsername" promptText="User" GridPane.columnIndex="1" />
             <PasswordField fx:id="pfPassword" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="185.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+            <StackPane GridPane.columnIndex="1" GridPane.rowIndex="4">
                <children>
-                  <Button fx:id="btAuth" mnemonicParsing="false" prefHeight="33.0" prefWidth="133.0" text="Authenticate" textAlignment="CENTER">
+                  <GridPane>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="172.0" minWidth="10.0" prefWidth="159.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="98.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <StackPane GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                           <children>
+                              <Button fx:id="btAuth" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Authenticate" textAlignment="CENTER">
                      <!-- <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin> -->
                   </Button>
-                  <Button fx:id="btCancel" mnemonicParsing="false" prefHeight="33.0" prefWidth="110.0" text="Cancel" textAlignment="CENTER">
+                           </children>
+                        </StackPane>
+                        <StackPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <Button fx:id="btCancel" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Cancel" textAlignment="CENTER" GridPane.columnIndex="1">
                      <!-- <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin> -->
                   </Button>
+                           </children>
+                        </StackPane>
+                     </children>
+                  </GridPane>
                </children>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </HBox>
+            </StackPane>
          </children>
       </GridPane>
    </content>

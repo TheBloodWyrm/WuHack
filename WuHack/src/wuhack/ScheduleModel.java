@@ -28,9 +28,10 @@ import org.w3c.dom.html.HTMLTableRowElement;
 public class ScheduleModel
 {
 
-  private List<String> classes = new ArrayList<>();
   private Lesson[][][] timetable = new Lesson[32][5][12];
   private List<String> kuerzel = new ArrayList<>(90);
+  private List<String> classes = new ArrayList<>(30);
+  private List<String> classrooms = new ArrayList<>(50);
 
   private static ScheduleModel instance = new ScheduleModel();
 
@@ -144,19 +145,25 @@ public class ScheduleModel
                 }
                 else
                 {
-                  classroom = inCells.item(1).getTextContent().trim();
+                  classroom = removeSigns(inCells.item(1).getTextContent().trim());
                 }
 
                 //System.out.println(" " + removeSigns(inCells.item(0).getTextContent().trim()) + " - - - " + classroom);
                 String kuerzel = removeSigns(inCells.item(0).getTextContent().trim()); //.replace("---", "NIEMAND");
                 //teachers.add(Kürzel.valueOf(kuerzel));
                 teachers.add(kuerzel);
-                if (!this.kuerzel.contains(kuerzel))
+
+                if (!this.kuerzel.contains(kuerzel) && !kuerzel.equals("---"))
                 {
                   this.kuerzel.add(kuerzel);
                 }
 
                 classrooms.add(classroom);
+
+                if (!this.classrooms.contains(classroom) && !classroom.equals("???"))
+                {
+                  this.classrooms.add(classroom);
+                }
               }
             }
           }
@@ -165,16 +172,14 @@ public class ScheduleModel
           {
             int spalte = j - 1 + doneCells[(i - 1) / 2 + k];
             int zeile = (i - 1) / 2 + k;
-            
+
             System.out.println("Spalte: " + spalte + ", Zeile: " + zeile);
-            
-            
+
 //            System.out.println("Cell: j = " + (j - 1 + doneCells[(i - 1) / 2 + k]) + "   i = " + ((i - 1) / 2 + k));
 //            System.out.println("rowspan: " + (Integer.parseInt(cell.getAttribute("rowspan")) / 2));
 //            System.out.println("row: " + k);
 //            System.out.println("donecells[" + ((i - 1) / 2) + "] = " + doneCells[(i - 1) / 2]);
 //            System.out.println();
-
             if (isLesson && schedule[spalte][zeile] == null)
             {
               //Lesson l = new Lesson(convertTeachers(teachers), subject, klasse, convertClassrooms(classrooms), hour + k, calweek, weekday);
@@ -237,7 +242,7 @@ public class ScheduleModel
             {
               //System.out.println(" contains " + ku + ": " + contains(l.getTeachers(), ku));
 
-                        //System.out.println("found: " + j + " " + k);
+              //System.out.println("found: " + j + " " + k);
               //table[j][k] = l;
             }
             else
@@ -282,7 +287,7 @@ public class ScheduleModel
     return table;
   }
 
-  public Lesson[][] getClassroomsLessons(String cl)
+  public Lesson[][] getClassroomLessons(String cl)
   {
     Lesson[][] table = new Lesson[5][12];
 
@@ -313,6 +318,7 @@ public class ScheduleModel
   {
     classes.clear();
     kuerzel.clear();
+    classrooms.clear();
 
     we.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>()
     {
@@ -375,7 +381,6 @@ public class ScheduleModel
 
   private String removeSigns(String s)
   {
-    String ret = "";
     char[] ignorableChars
             =
             {
@@ -383,35 +388,57 @@ public class ScheduleModel
               '%', '&', '/', '(', ')', '=', '\\', ']',
               '[', '{', '}', '#', '+', '*', '~', '\n'
             };
-    for (int i : s.chars().toArray())
+
+    for (char ignorableChar : ignorableChars)
     {
-      boolean fits = true;
-      char c = (char) i;
-
-      for (char ignorableChar : ignorableChars)
-      {
-        if (c == ignorableChar)
-        {
-          fits = false;
-        }
-      }
-
-      if (fits)
-      {
-        ret += c;
-      }
+      s = s.replace(ignorableChar + "", "");
     }
 
-    return ret;
+    return s;
 
+//    boolean changed = false;
+//    String ret = "";
+//    char[] ignorableChars
+//            =
+//            {
+//              '.', ',', '\'', '\"', '!', '?', '§', '$',
+//              '%', '&', '/', '(', ')', '=', '\\', ']',
+//              '[', '{', '}', '#', '+', '*', '~', '\n'
+//            };
+//    for (int i : s.chars().toArray())
+//    {
+//      boolean fits = true;
+//      char c = (char) i;
+//
+//      for (char ignorableChar : ignorableChars)
+//      {
+//        if (c == ignorableChar)
+//        {
+//          fits = false;
+//          changed = true;
+//        }
+//      }
+//
+//      if (fits)
+//      {
+//        ret += c;
+//      }
+//    }
+//
+//    if(changed)
+//    {
+//      removeSigns(ret);
+//    }
+//    
+//    return ret;
   }
-  
+
   public String removeLineBreak(String s)
   {
     String s1 = "";
-    
+
     s1 = s.replace("\n", "");
-    
+
     return s1;
   }
 
@@ -428,6 +455,11 @@ public class ScheduleModel
   public Lesson[][][] getTimetable()
   {
     return timetable;
+  }
+
+  public List<String> getClassrooms()
+  {
+    return classrooms;
   }
 
 }
