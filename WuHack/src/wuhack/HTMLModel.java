@@ -58,7 +58,7 @@ public class HTMLModel
     body.setAttribute("style", bodySheet);
     htmltag.appendChild(body);
 
-        //stylesheet
+    //stylesheet
     //<link rel="stylesheet" type="text/css" href="mystyle.css">
 //    Element stylenode = doc.createElement("stylesheets");
 //    Element urlnode = doc.createElement("URL");
@@ -342,7 +342,7 @@ public class HTMLModel
 
         }
 
-        if (schedule[j - 1][i - 1] == null)
+        if (schedule[j - 1][i - 1] != null)
         {
 //                    HTMLTableRowElement subjectRow = (HTMLTableRowElement) lessonRows.item(0);
 //                    HTMLTableCellElement subjectCell = (HTMLTableCellElement) subjectRow.getCells().item(0);
@@ -352,30 +352,29 @@ public class HTMLModel
 //                        lessonTable.deleteRow(1);
 //                    }
 
-          continue;
-        }
+          Lesson lesson = schedule[j - 1][i - 1];
 
-        Lesson lesson = schedule[j - 1][i - 1];
-
-        HTMLTableRowElement subjectRow = (HTMLTableRowElement) d.createElement("tr"); //(HTMLTableRowElement) lessonRows.item(0);
-        HTMLTableCellElement subjectCell = (HTMLTableCellElement) d.createElement("td"); //subjectRow.getCells().item(0);
-        subjectCell.setTextContent(lesson.getSubject());
-        subjectRow.appendChild(subjectCell);
-        lessonTable.appendChild(subjectRow);
+          HTMLTableRowElement subjectRow = (HTMLTableRowElement) d.createElement("tr"); //(HTMLTableRowElement) lessonRows.item(0);
+          HTMLTableCellElement subjectCell = (HTMLTableCellElement) d.createElement("td"); //subjectRow.getCells().item(0);
+          subjectCell.setTextContent(lesson.getSubject());
+          subjectCell.setAttribute("class", "subject");
+          subjectRow.appendChild(subjectCell);
+          lessonTable.appendChild(subjectRow);
 
 //                for (int k = 0; k < lessonRows.getLength() - 1; k++) {
 //                    lessonTable.deleteRow(1);
 //                }
-        for (int k = 0; k < lesson.getTeachers().length; k++)
-        {
-          HTMLTableRowElement r = (HTMLTableRowElement) d.createElement("tr");
-          HTMLTableCellElement cellTeacher = (HTMLTableCellElement) d.createElement("td");
-          cellTeacher.setTextContent(lesson.getTeachers()[k]);
-          HTMLTableCellElement cellClassroom = (HTMLTableCellElement) d.createElement("td");
-          cellClassroom.setTextContent(lesson.getClassrooms()[k]);
-          r.appendChild(cellTeacher);
-          r.appendChild(cellClassroom);
-          lessonTable.appendChild(r);
+          for (int k = 0; k < lesson.getTeachers().length; k++)
+          {
+            HTMLTableRowElement r = (HTMLTableRowElement) d.createElement("tr");
+            HTMLTableCellElement cellTeacher = (HTMLTableCellElement) d.createElement("td");
+            cellTeacher.setTextContent(lesson.getTeachers()[k]);
+            HTMLTableCellElement cellClassroom = (HTMLTableCellElement) d.createElement("td");
+            cellClassroom.setTextContent(lesson.getClassrooms()[k]);
+            r.appendChild(cellTeacher);
+            r.appendChild(cellClassroom);
+            lessonTable.appendChild(r);
+          }
         }
       }
     }

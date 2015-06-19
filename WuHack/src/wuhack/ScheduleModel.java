@@ -97,7 +97,7 @@ public class ScheduleModel
           WeekDay weekday;
           boolean isLesson = true;
 
-          weekday = WeekDay.values()[j - 1];
+          weekday = WeekDay.values()[j - 1 + doneCells[(i - 1) / 2]];
           hour = (i - 1) / 2 + 1;
 
           HTMLTableCellElement cell = (HTMLTableCellElement) cells.item(j);
@@ -264,27 +264,56 @@ public class ScheduleModel
   {
     Lesson[][] table = new Lesson[5][12];
 
-    for (int i = 0; i < timetable.length; i++)
+    boolean classfound = false;
+    int i = 0;
+    while (!classfound && i < timetable.length)
     {
-      for (int j = 0; j < timetable[i].length; j++)
+      int j = 0;
+      int k = 0;
+      boolean found = false;
+      while (!found && j < timetable[0].length)
       {
-        for (int k = 0; k < timetable[i][j].length; k++)
+        while (!found && k < timetable[0][0].length)
         {
-          Lesson l = timetable[i][j][k];
-
-          if (l != null && l.getKlasse().equals(cl))
+          if (timetable[i][j][k] != null)
           {
-            int day = l.getWeekDay().ordinal();
-            int hour = l.getHour() - 1;
+            found = true;
 
-            table[day][hour] = l;
+            if (timetable[i][j][k].getKlasse().equals(cl))
+            {
+              table = timetable[i];
+              classfound = true;
+            }
           }
-        }
-      }
-    }
 
-    //WebBrowserTest.printLessons(table);
+          k++;
+        }
+        j++;
+      }
+      i++;
+    }
+    
     return table;
+
+//      for(int i = 0; i < timetable.length; i++)
+//      {
+    //      for (int j = 0; j < timetable[i].length; j++)
+//      {
+//        for (int k = 0; k < timetable[i][j].length; k++)
+//        {
+//          Lesson l = timetable[i][j][k];
+//
+//          if (l != null && l.getKlasse().equals(cl))
+//          {
+//            int day = l.getWeekDay().ordinal();
+//            int hour = l.getHour() - 1;
+//
+//            table[day][hour] = l;
+//          }
+//        }
+//      }
+//      }
+    //WebBrowserTest.printLessons(table);
   }
 
   public Lesson[][] getClassroomLessons(String cl)

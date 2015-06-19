@@ -17,6 +17,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -173,7 +174,7 @@ public class FXMLGUIController implements Initializable
     taConsole.setText(t);
   }
 
-  public void onDaten(MouseEvent event)
+  public void onDaten(Event event)
   {
     int index = tvDaten.getSelectionModel().getSelectedIndex();
     if (index >= 0)
@@ -186,13 +187,13 @@ public class FXMLGUIController implements Initializable
       switch (mode)
       {
         case "Klassen":
-          HTMLModel.convertToHTMLv3(webEngine, model.getClassLessons(str), str, getCalendarWeek());
+          HTMLModel.convertToHTMLv3(webEngine, model.getClassLessons(str), "Klasse - " + str, getCalendarWeek());
           break;
         case "Lehrer":
-          HTMLModel.convertToHTMLv3(webEngine, model.getTeacherLessons(str), str, getCalendarWeek());
+          HTMLModel.convertToHTMLv3(webEngine, model.getTeacherLessons(str), "Lehrer - " + str, getCalendarWeek());
           break;
         case "Räume":
-          HTMLModel.convertToHTMLv3(webEngine, model.getClassroomLessons(str), str, getCalendarWeek());
+          HTMLModel.convertToHTMLv3(webEngine, model.getClassroomLessons(str), "Raum - " + str, getCalendarWeek());
           break;
       }
     }
@@ -322,6 +323,7 @@ public class FXMLGUIController implements Initializable
   {
     btUpdate.setOnAction(this::onUpdate);
     tvDaten.setOnMouseClicked(this::onDaten);
+    tvDaten.setOnKeyReleased(this::onDaten);
 
     btKlassen.setOnAction(this::onKlassen);
     btLehrer.setOnAction(this::onLehrer);
