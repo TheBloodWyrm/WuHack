@@ -33,7 +33,7 @@ public class ScheduleModel
   private List<String> classes = new ArrayList<>(30);
   private List<String> classrooms = new ArrayList<>(50);
 
-  private static ScheduleModel instance = new ScheduleModel();
+  private static final ScheduleModel instance = new ScheduleModel();
 
   private ScheduleModel()
   {
@@ -61,10 +61,8 @@ public class ScheduleModel
       return null;
     }
 
-    // WebBrowserTest.printAllNodes(d);
     HTMLFontElement f = (HTMLFontElement) d.getElementsByTagName("font").item(1);
 
-    //System.out.println("FontText: " + f.getTextContent());
     String klasse = removeLineBreak(f.getTextContent());
 
     if (!this.classes.contains(klasse))
@@ -88,17 +86,12 @@ public class ScheduleModel
       {
         if (schedule[j - 1 + doneCells[(i - 1) / 2]][((i - 1) / 2)] == null)
         {
-          //System.out.println("Lesson:");
 
           LinkedList<String> teachers = new LinkedList<>();
           String subject = "???";
           LinkedList<String> classrooms = new LinkedList<>();
-          int hour;
-          WeekDay weekday;
           boolean isLesson = true;
 
-          weekday = WeekDay.values()[j - 1 + doneCells[(i - 1) / 2]];
-          hour = (i - 1) / 2 + 1;
 
           HTMLTableCellElement cell = (HTMLTableCellElement) cells.item(j);
 
@@ -114,15 +107,12 @@ public class ScheduleModel
             {
               if (removeSigns(inCells.item(0).getTextContent().trim()).length() > 5)
               {
-                // TODO!! (derweil wird nur gelöscht)
+                // (todo, derweil wird nur gelöscht)
                 isLesson = false;
-
-                //System.out.println("No lesson: " + inRow.getTextContent());
               }
               else
               {
                 subject = removeSigns(inCells.item(0).getTextContent().trim());
-                //System.out.println(" " + subject);
               }
 
             }
@@ -130,10 +120,8 @@ public class ScheduleModel
             {
               if (removeSigns(inCells.item(0).getTextContent().trim()).length() > 3)
               {
-                // TODO!! (derweil wird nur gelöscht)
+                // (todo, derweil wird nur gelöscht)
                 isLesson = false;
-
-                //System.out.println("No lesson: " + inRow.getTextContent());
               }
               else
               {
@@ -148,9 +136,7 @@ public class ScheduleModel
                   classroom = removeSigns(inCells.item(1).getTextContent().trim());
                 }
 
-                //System.out.println(" " + removeSigns(inCells.item(0).getTextContent().trim()) + " - - - " + classroom);
-                String kuerzel = removeSigns(inCells.item(0).getTextContent().trim()); //.replace("---", "NIEMAND");
-                //teachers.add(Kürzel.valueOf(kuerzel));
+                String kuerzel = removeSigns(inCells.item(0).getTextContent().trim());
                 teachers.add(kuerzel);
 
                 if (!this.kuerzel.contains(kuerzel) && !kuerzel.equals("---"))
@@ -177,8 +163,7 @@ public class ScheduleModel
 
             if (isLesson && schedule[spalte][zeile] == null)
             {
-              //Lesson l = new Lesson(convertTeachers(teachers), subject, klasse, convertClassrooms(classrooms), hour + k, calweek, weekday);
-              Lesson l = new Lesson(teachers.toArray(new String[0]), subject, klasse, classrooms.toArray(new String[0]), hour + k, calweek, weekday);
+              Lesson l = new Lesson(teachers.toArray(new String[0]), subject, klasse, classrooms.toArray(new String[0]), calweek);
               schedule[spalte][zeile] = l;
 
             }
@@ -324,20 +309,6 @@ public class ScheduleModel
     });
 
     we.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + (week) + "/c/c" + String.format("%05d", 1) + ".htm");
-
-//        for (i = 1; i < timetable.length; i++) {
-//            we.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + (week) + "/c/c" + String.format("%05d", i) + ".htm");
-//            while (we.getLoadWorker().getState() != State.SUCCEEDED) {
-//                System.out.println(we.getLoadWorker().getState() + " " + i);
-//                try {
-//                    Thread.sleep(10);
-//                } catch (InterruptedException ex) {
-//                    System.out.println("");
-//                }
-//            }
-//
-//            timetable[i] = analyzeDoc(we.getDocument(), week, i);
-//        }
   }
 
   private boolean contains(String[] a, String k)
@@ -371,42 +342,6 @@ public class ScheduleModel
     }
 
     return s;
-
-//    boolean changed = false;
-//    String ret = "";
-//    char[] ignorableChars
-//            =
-//            {
-//              '.', ',', '\'', '\"', '!', '?', '§', '$',
-//              '%', '&', '/', '(', ')', '=', '\\', ']',
-//              '[', '{', '}', '#', '+', '*', '~', '\n'
-//            };
-//    for (int i : s.chars().toArray())
-//    {
-//      boolean fits = true;
-//      char c = (char) i;
-//
-//      for (char ignorableChar : ignorableChars)
-//      {
-//        if (c == ignorableChar)
-//        {
-//          fits = false;
-//          changed = true;
-//        }
-//      }
-//
-//      if (fits)
-//      {
-//        ret += c;
-//      }
-//    }
-//
-//    if(changed)
-//    {
-//      removeSigns(ret);
-//    }
-//    
-//    return ret;
   }
 
   public String removeLineBreak(String s)

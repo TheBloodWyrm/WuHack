@@ -246,7 +246,7 @@ public class WebBrowserTest extends Application {
             classrooms = classrooms + "\t" + t.trim();
         }
 
-        System.out.println(l.getHour() + " " + l.getSubject().trim() + "\t" + l.getKlasse().replace("\n", "").trim() + "\t" + teachers + "\t" + classrooms + " ");
+        System.out.println(l.getSubject().trim() + "\t" + l.getKlasse().replace("\n", "").trim() + "\t" + teachers + "\t" + classrooms + " ");
     }
 
     public static void printAllLessons(Lesson[][][] l) {

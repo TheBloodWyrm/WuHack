@@ -17,18 +17,14 @@ public class Lesson {
     private String subject;
     private String klasse;
     private String[] classrooms;
-    private int hour;
     private int Week;
-    private WeekDay weekDay;
     
-    public Lesson(String[] teachers, String subject, String klasse, String[] classrooms, int hour, int Week, WeekDay weekDay) {
+    public Lesson(String[] teachers, String subject, String klasse, String[] classrooms, int Week) {
         this.teachers = teachers;
         this.subject = subject;
         this.klasse = klasse;
         this.classrooms = classrooms;
-        this.hour = hour;
         this.Week = Week;
-        this.weekDay = weekDay;
     }
 
   public String getKlasse()
@@ -65,27 +61,11 @@ public class Lesson {
         this.classrooms = classroom;
     }
 
-    public int getHour() {
-        return hour;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
-
     public int getWeek() {
         return Week;
     }
 
     public void setWeek(int Week) {
         this.Week = Week;
-    }
-
-    public WeekDay getWeekDay() {
-        return weekDay;
-    }
-
-    public void setWeekDay(WeekDay weekDay) {
-        this.weekDay = weekDay;
     }
 }
