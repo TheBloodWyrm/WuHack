@@ -6,6 +6,8 @@
 
 package wuhack;
 
+import java.util.Arrays;
+
 /**
  *
  * @author Julian
@@ -67,5 +69,27 @@ public class Lesson {
 
     public void setWeek(int Week) {
         this.Week = Week;
+    }
+    
+    public boolean isEqualTo(Lesson l)
+    {
+      boolean equal = true;
+      
+      if(!Arrays.equals(teachers, l.getTeachers()))
+        equal = false;
+      
+      if(!Arrays.equals(classrooms, l.getClassrooms()))
+        equal = false;
+      
+      if(!subject.equals(l.subject))
+        equal = false;
+      
+      if(!klasse.equals(l.getKlasse()))
+        equal = false;
+      
+      if(Week != l.getWeek())
+        equal = false;
+      
+      return equal;
     }
 }
