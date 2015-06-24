@@ -10,14 +10,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TitledPane collapsible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="120.0" minWidth="200.0" prefHeight="205.0" prefWidth="404.0" text="Authentication" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<TitledPane collapsible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="120.0" minWidth="200.0" prefHeight="166.0" prefWidth="404.0" text="Authentication" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
     
     <content>
-      <GridPane fx:id="gp" prefHeight="146.0" prefWidth="398.0">
+      <GridPane fx:id="gp" prefHeight="128.0" prefWidth="402.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="50.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="200.0" />
@@ -25,8 +25,6 @@
         <rowConstraints>
           <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
@@ -34,7 +32,7 @@
             <Label fx:id="lbPassword" prefWidth="200" text="Password" GridPane.rowIndex="1" />
             <TextField fx:id="tfUsername" promptText="User" GridPane.columnIndex="1" />
             <PasswordField fx:id="pfPassword" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <StackPane GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <StackPane GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
                   <GridPane>
                      <columnConstraints>
@@ -65,6 +63,9 @@
                            </children>
                         </StackPane>
                      </children>
+                     <StackPane.margin>
+                        <Insets top="5.0" />
+                     </StackPane.margin>
                   </GridPane>
                </children>
             </StackPane>
