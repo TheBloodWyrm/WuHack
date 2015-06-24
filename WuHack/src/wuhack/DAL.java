@@ -69,6 +69,7 @@ public class DAL {
     }
     
     public static String getFileContent(String file) {
+        Log.log("Read in template for schedule...");
         StringBuilder sb = new StringBuilder();
         
         try {
@@ -80,7 +81,7 @@ public class DAL {
             }
             br.close();
         } catch (IOException ex) {
-            System.out.println("File Not Found: "+ex.getMessage());
+            Log.log("Template file not found: "+ex.getMessage());
         }
         
         return sb.toString();

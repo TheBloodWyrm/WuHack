@@ -57,7 +57,7 @@ public class ScheduleModel
 
     if (d == null)
     {
-      System.out.println("Not a Document");
+      Log.log("Not a document");
       return null;
     }
 
@@ -159,7 +159,7 @@ public class ScheduleModel
             int spalte = j - 1 + doneCells[(i - 1) / 2];
             int zeile = (i - 1) / 2 + k;
 
-            System.out.println("Spalte: " + spalte + ", Zeile: " + zeile);
+            //System.out.println("Spalte: " + spalte + ", Zeile: " + zeile);
 
             if (isLesson && schedule[spalte][zeile] == null)
             {
@@ -196,7 +196,8 @@ public class ScheduleModel
 
   public Lesson[][] getTeacherLessons(String ku)
   {
-    Lesson[][] table = new Lesson[5][12];
+    Log.log("Retrieve lessons of selected teacher...");
+      Lesson[][] table = new Lesson[5][12];
 
     for (int i = 0; i < timetable.length; i++)
     {
@@ -219,7 +220,8 @@ public class ScheduleModel
 
   public Lesson[][] getClassLessons(String cl)
   {
-    Lesson[][] table = new Lesson[5][12];
+    Log.log("Retrieve lessons of selected class...");
+      Lesson[][] table = new Lesson[5][12];
 
     boolean classfound = false;
     int i = 0;
@@ -255,7 +257,8 @@ public class ScheduleModel
 
   public Lesson[][] getClassroomLessons(String cl)
   {
-    Lesson[][] table = new Lesson[5][12];
+    Log.log("Retrieve lessons of selected room...");
+      Lesson[][] table = new Lesson[5][12];
 
     for (int i = 0; i < timetable.length; i++)
     {
@@ -277,7 +280,8 @@ public class ScheduleModel
 
   public void loadAllLessons(WebEngine we, int week)
   {
-    classes.clear();
+    Log.log("Start loading all lessons...");
+      classes.clear();
     kuerzel.clear();
     classrooms.clear();
 
@@ -297,12 +301,16 @@ public class ScheduleModel
           if (counter < timetable.length - 1)
           {
             counter++;
-            we.load("https://supplierplan.htl-kaindorf.at/supp_neu/" + (week) + "/c/c" + String.format("%05d", counter) + ".htm");
+            String url = "https://supplierplan.htl-kaindorf.at/supp_neu/" + (week) + "/c/c" + String.format("%05d", counter) + ".htm";
+            we.load(url);
+            
+            Log.log("Browsing to "+url);
           }
           else
           {
             //WebBrowserTest.printAllLessons(timetable);
             we.getLoadWorker().stateProperty().removeListener(this);
+            Log.log("Finished loading");
           }
         }
       }
