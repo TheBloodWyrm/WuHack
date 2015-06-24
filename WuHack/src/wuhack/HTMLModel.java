@@ -353,6 +353,36 @@ public class HTMLModel
 //                    }
 
           Lesson lesson = schedule[j - 1][i - 1];
+          
+          
+          
+          
+          // TODO: rowspan
+          
+          
+          
+          
+//          int repeat = 0;
+//          boolean end = false;
+//          while(!end)
+//          {
+//            repeat++;
+//            
+//            if(schedule[j-1][i-1+repeat] != null)
+//            {
+//              if(!lesson.isEqualTo(schedule[j-1][i-1+repeat]))
+//              {
+//                end = true;
+//              }
+//            }
+//          }
+//          
+//          ((HTMLTableCellElement)cells.item(j)).setAttribute("rowspan", repeat + "");
+//          
+//          for (int k = 1; k < repeat; k++)
+//          {
+//            ((HTMLTableRowElement)rows.item(i+k)).removeChild(((HTMLTableRowElement)rows.item(i+k)).getChildNodes().item(j));
+//          }
 
           HTMLTableRowElement subjectRow = (HTMLTableRowElement) d.createElement("tr"); //(HTMLTableRowElement) lessonRows.item(0);
           HTMLTableCellElement subjectCell = (HTMLTableCellElement) d.createElement("td"); //subjectRow.getCells().item(0);
