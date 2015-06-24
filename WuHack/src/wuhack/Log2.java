@@ -22,7 +22,7 @@ public class Log2
   private int lesson;
   private int weekday;
   
-  StringBuilder text = new Stringbuilder();
+  StringBuilder text = new StringBuilder();
   
   LocalTime nowTime = LocalTime.now();
   LocalDate nowDate = LocalDate.now();
