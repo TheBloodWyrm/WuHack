@@ -146,7 +146,7 @@ public class FXMLGUIController implements Initializable {
         tvDaten.getItems().clear();
 
         List<String> data = model.getClasses();
-        data.sort((s1, s2) -> s1.compareToIgnoreCase(s2));
+        //data.sort((s1, s2) -> s1.compareToIgnoreCase(s2));
         for (String s : data) {
             tvDaten.getItems().add(new TableModel(s, ""));
         }
