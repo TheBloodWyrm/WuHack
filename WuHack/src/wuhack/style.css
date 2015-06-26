@@ -195,7 +195,9 @@
 
 .text-area .scroll-pane .content {
     -fx-background-color: #353A3E;
+}
+
+#taConsole {
     -fx-text-fill: #FFFFFF;
-    -fx-color: white;
 }
 

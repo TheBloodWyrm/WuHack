@@ -135,6 +135,8 @@ public class FXMLGUIController implements Initializable {
                     HTMLModel.convertToHTMLv3(wv.getEngine(), model.getClassroomLessons(str), "Raum - " + str, getCalendarWeek());
                     break;
             }
+            
+            Log.log("Schedule complete");
         }
     }
 
@@ -205,7 +207,15 @@ public class FXMLGUIController implements Initializable {
         Log.log("~~~~~ WuHack ~~~~~");
         Log.log("Initialize...");
         
-        taConsole.textProperty().bindBidirectional(Log.get());
+        Log.get().addListener(new ChangeListener<String>() {
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                taConsole.setScrollTop(Double.MAX_VALUE);
+            }
+        });
+        
+        taConsole.textProperty().bind(Log.get());
         
         btUpdate.setOnAction(this::onUpdate);
         tvDaten.setOnMouseClicked(this::onDaten);
@@ -219,5 +229,7 @@ public class FXMLGUIController implements Initializable {
 
         model = ScheduleModel.getInstance();
         //webEngine = wv.getEngine();
+        
+        Log.log("Ready to operate");
     }
 }

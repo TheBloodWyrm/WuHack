@@ -121,7 +121,7 @@
         <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
       </rowConstraints>
       <children>
-        <TextArea fx:id="taConsole" editable="false" minHeight="45.0" prefHeight="45.0" prefWidth="190.0" GridPane.columnIndex="1">
+        <TextArea fx:id="taConsole" editable="false" minHeight="45.0" prefHeight="45.0" prefWidth="190.0" wrapText="true" GridPane.columnIndex="1">
           <padding>
             <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
           </padding>
