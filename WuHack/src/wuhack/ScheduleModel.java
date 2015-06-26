@@ -62,7 +62,7 @@ public class ScheduleModel
     }
 
     HTMLFontElement f = (HTMLFontElement) d.getElementsByTagName("font").item(1);
-
+    
     String klasse = removeLineBreak(f.getTextContent());
 
     if (!this.classes.contains(klasse))
@@ -288,7 +288,7 @@ public class ScheduleModel
     we.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>()
     {
 
-      int counter = 1;
+      int counter = 0   ;
 
       @Override
       public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue)
@@ -296,14 +296,16 @@ public class ScheduleModel
 
         if (newValue == State.SUCCEEDED)
         {
-          timetable[counter - 1] = analyzeDoc(we.getDocument(), week, counter);
+            System.out.println(counter);
+          
 
-          if (counter < timetable.length - 1)
+          if (counter < timetable.length)
           {
+              timetable[counter] = analyzeDoc(we.getDocument(), week, counter);
             counter++;
             String url = "https://supplierplan.htl-kaindorf.at/supp_neu/" + (week) + "/c/c" + String.format("%05d", counter) + ".htm";
             we.load(url);
-            
+              System.out.println(url);
             Log.log("Browsing to "+url);
           }
           else

@@ -18,7 +18,6 @@ public class Log {
     
     public static void log(String text) {
         log.set(log.get().concat(text+"\n"));
-        System.out.println(text);
     }
     
     public static void clear() {
