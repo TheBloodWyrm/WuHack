@@ -181,6 +181,49 @@
   -fx-padding: 5;
 }
 
+.combo-box
+{
+  -fx-padding: 5 22 5 22;   
+  -fx-border-color: #e2e2e2;
+  -fx-border-width: 2;
+  -fx-background-radius: 0;
+  -fx-background-color: #353A3E;
+  -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+  -fx-font-size: 11pt;
+  -fx-text-fill: #e2e2e2;
+  -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.combo-box-base
+{
+  -fx-text-fill: #e2e2e2;
+}
+
+.combo-box-base .text-input
+{
+  -fx-text-fill: #e2e2e2;
+}
+
+.combo-box-popup .list-view:hover .list-cell:hover
+{
+  -fx-background-color: #e2e2e2;
+  -fx-text-fill: #353A3E;
+}
+
+.combo-box-popup .list-view .list-cell
+{
+  -fx-padding: 5 22 5 22;   
+  -fx-border-color: #e2e2e2;
+  -fx-border-width: 2;
+  -fx-background-radius: 0;
+  -fx-background-color: #303539;
+  -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+  -fx-font-size: 11pt;
+  -fx-text-fill: #e2e2e2;
+  -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+
 .number {
   background-color:#555A5E;
   border-color: #555A5E;
