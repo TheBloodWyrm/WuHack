@@ -292,6 +292,8 @@ public class HTMLModel
 
   public static Document convertToHTMLv3(WebEngine we, Lesson[][] schedule, String title, int calweek)
   {
+    Log.log("Converting schedule to HTML...");
+    
     //WebEngine we = new WebEngine();
     we.loadContent(SCHEDULE_TEMPLATE);
     we.getLoadWorker().stateProperty().addListener(new ChangeListener<State>()
@@ -302,9 +304,11 @@ public class HTMLModel
       {
         System.out.println(newValue);
         if (newValue == State.SUCCEEDED)
-        {
+        {       
           convert(we.getDocument(), schedule, title, calweek);
           we.reload();
+          
+          Log.log("View HTML schedule");
         }
       }
     });

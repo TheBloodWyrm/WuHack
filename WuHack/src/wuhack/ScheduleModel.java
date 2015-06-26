@@ -244,15 +244,18 @@ public class ScheduleModel {
 
                 if (newValue == State.SUCCEEDED) {
                     if (counter < timetable.length) {
+                        Log.log("Analyzing and parsing HTML document...");
+                        
                         timetable[counter] = analyzeDoc(we.getDocument(), week, counter);
                         counter++;
                         String url = "https://supplierplan.htl-kaindorf.at/supp_neu/" + (week) + "/c/c" + String.format("%05d", counter) + ".htm";
                         we.load(url);
-                        System.out.println(url);
+                        
                         Log.log("Browsing to " + url);
                     } else {
                         //WebBrowserTest.printAllLessons(timetable);
                         we.getLoadWorker().stateProperty().removeListener(this);
+                        
                         Log.log("Finished loading");
                     }
                 }

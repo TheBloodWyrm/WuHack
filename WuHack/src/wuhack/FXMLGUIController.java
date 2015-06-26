@@ -71,6 +71,7 @@ public class FXMLGUIController implements Initializable {
 
             @Override
             public void handle(WindowEvent event) {
+                Log.log("Authenticate with \""+pop.getUserName()+"\" at server");
                 Authenticator.setDefault(new AuthenticatorTest(pop.getUserName(), pop.getPassword()));
 
                 if (pop.isReady()) {
