@@ -9,6 +9,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Calendar;
+import javafx.scene.web.WebEngine;
 
 /**
  *
@@ -134,7 +136,7 @@ public class Log2
     }
   }
   
-  public String checkWhichLesson(String kuerzel){
+  public String checkWhichLesson(String kuerzel, WebEngine web){
     checkTime();
     checkWeekDay();
     
@@ -144,8 +146,19 @@ public class Log2
       text.append(" nicht in der Schule, da es Wochenende ist.");
     }
     
+    ScheduleModel model = ScheduleModel.getInstance();
+    
+    //model.analyzeDoc(web.getDocument(), getCalendarWeek(), 1);
     
     return text.toString();
+  }
+  private int getCalendarWeek()
+  {
+    Calendar cal = Calendar.getInstance();
+    cal.setTimeInMillis(System.currentTimeMillis());
+    int week = cal.get(Calendar.WEEK_OF_YEAR);
+
+    return week;
   }
 
 }
