@@ -14,9 +14,12 @@ import javafx.concurrent.Worker;
 import javafx.concurrent.Worker.State;
 import javafx.scene.web.WebEngine;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.html.HTMLAnchorElement;
 import org.w3c.dom.html.HTMLCollection;
 import org.w3c.dom.html.HTMLFontElement;
+import org.w3c.dom.html.HTMLLinkElement;
 import org.w3c.dom.html.HTMLTableCellElement;
 import org.w3c.dom.html.HTMLTableElement;
 import org.w3c.dom.html.HTMLTableRowElement;
@@ -151,6 +154,36 @@ public class ScheduleModel {
         return schedule;
     }
 
+    public Integer[] readWeeks(Document d) {
+        List<Integer> weeks = new ArrayList<>(3);
+        NodeList nl = d.getElementsByTagName("a");
+        
+        for (int i = 0; i < nl.getLength(); i++) {
+            HTMLAnchorElement l = (HTMLAnchorElement) nl.item(i);
+            String href = l.getHref();
+            String n = href.substring(href.length()-3, href.length()-1);
+            
+            if (isNumeric(n)) {
+                weeks.add(Integer.valueOf(n));
+            }
+        }
+        
+        return weeks.toArray(new Integer[0]);
+    }
+    
+    private boolean isNumeric(String str) {
+        boolean b = true;
+        
+        for (char c : str.toCharArray()) {
+            
+            if(!Character.isDigit(c)) {
+                b = false;
+            }
+        }
+        
+        return b;
+    }
+    
     private String[] convertClassrooms(List<String> classrooms) {
         String[] array = new String[classrooms.size()];
 

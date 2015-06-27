@@ -308,7 +308,6 @@ public class HTMLModel
           convert(we.getDocument(), schedule, title, calweek);
           we.reload();
           
-          Log.log("View HTML schedule");
         }
       }
     });
@@ -412,6 +411,8 @@ public class HTMLModel
         }
       }
     }
+    
+    Log.log("View HTML schedule");
   }
 
   private static String[] getDays(int calweek)

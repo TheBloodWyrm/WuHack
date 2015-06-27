@@ -22,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -47,7 +48,9 @@ public class FXMLGUIController implements Initializable {
     private Button btUpdate;
     @FXML
     private ToggleButton btKlassen, btLehrer, btRaeume;
-
+    @FXML
+    private ComboBox<Integer> cbWeeks;
+    
     private WebEngine webEngine = new WebEngine();
     private ScheduleModel model;
 
@@ -75,7 +78,39 @@ public class FXMLGUIController implements Initializable {
                 Authenticator.setDefault(new AuthenticatorTest(pop.getUserName(), pop.getPassword()));
 
                 if (pop.isReady()) {
-                    Log.log("Loading schedules from https://supplierplan.htl-kaindorf.at/supp_neu/...");
+                    
+                    webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
+
+                        @Override
+                        public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+                            
+                            if(newValue == Worker.State.SUCCEEDED) {
+                                cbWeeks.getItems().setAll(model.readWeeks(webEngine.getDocument()));
+                                cbWeeks.getSelectionModel().select(0);
+                                webEngine.getLoadWorker().stateProperty().removeListener(this);
+                                loadSchedule();
+                            }
+                        }
+                    });
+                    webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/");
+                    
+                }
+            }
+        });
+
+        try {
+            auth.getContent().add(l.load());
+        } catch (IOException ex) {
+            Log.log("Error while displaying popup: " + ex.getMessage());
+        }
+
+        auth.show(btUpdate.getScene().getWindow());
+
+        btUpdate.setText("Update");
+    }
+
+    private void loadSchedule() {
+        Log.log("Loading schedules from https://supplierplan.htl-kaindorf.at/supp_neu/...");
                     //DAL.download();
                     webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
 
@@ -98,22 +133,10 @@ public class FXMLGUIController implements Initializable {
                         }
                     });
 
-                    model.loadAllLessons(webEngine, getCalendarWeek());
-                }
-            }
-        });
-
-        try {
-            auth.getContent().add(l.load());
-        } catch (IOException ex) {
-            Log.log("Error while displaying popup: " + ex.getMessage());
-        }
-
-        auth.show(btUpdate.getScene().getWindow());
-
-        btUpdate.setText("Update");
+                    //model.loadAllLessons(webEngine, getCalendarWeek());
+                    model.loadAllLessons(webEngine, cbWeeks.getValue());
     }
-
+    
     public void onDaten(Event event) {
         
         int index = tvDaten.getSelectionModel().getSelectedIndex();
@@ -206,6 +229,7 @@ public class FXMLGUIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Log.log("~~~~~ WuHack ~~~~~");
+        Log.log(Calendar.getInstance().getTime().toString());
         Log.log("Initialize...");
         
         Log.get().addListener(new ChangeListener<String>() {
