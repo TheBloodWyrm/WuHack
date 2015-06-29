@@ -28,6 +28,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebErrorEvent;
 import javafx.scene.web.WebView;
 import javafx.stage.Popup;
 import javafx.stage.WindowEvent;
@@ -245,7 +246,7 @@ public class FXMLGUIController implements Initializable {
         });
 
         taConsole.textProperty().bind(Log.get());
-
+        
         btUpdate.setOnAction(this::onUpdate);
         tvDaten.setOnMouseClicked(this::onDaten);
         tvDaten.setOnKeyReleased(this::onDaten);
@@ -260,6 +261,20 @@ public class FXMLGUIController implements Initializable {
 
         model = ScheduleModel.getInstance();
         //webEngine = wv.getEngine();
+        webEngine.getLoadWorker().exceptionProperty().addListener(new ChangeListener<Throwable>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Throwable> observable, Throwable oldValue, Throwable newValue) {
+                Log.log("Error while loading: "+newValue);
+            }
+        });
+        webEngine.setOnError(new EventHandler<WebErrorEvent>() {
+
+            @Override
+            public void handle(WebErrorEvent event) {
+                Log.log("Web error occured: "+event.getMessage());
+            }
+        });
 
         Log.log("Ready to operate");
     }
