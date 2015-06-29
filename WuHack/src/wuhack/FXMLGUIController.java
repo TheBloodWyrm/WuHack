@@ -50,7 +50,7 @@ public class FXMLGUIController implements Initializable {
     private ToggleButton btKlassen, btLehrer, btRaeume;
     @FXML
     private ComboBox<Integer> cbWeeks;
-    
+
     private WebEngine webEngine = new WebEngine();
     private ScheduleModel model;
 
@@ -74,26 +74,26 @@ public class FXMLGUIController implements Initializable {
 
             @Override
             public void handle(WindowEvent event) {
-                Log.log("Authenticate with \""+pop.getUserName()+"\" at server");
+                Log.log("Authenticate with \"" + pop.getUserName() + "\" at server");
                 Authenticator.setDefault(new AuthenticatorTest(pop.getUserName(), pop.getPassword()));
 
                 if (pop.isReady()) {
-                    
+
                     webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
 
                         @Override
                         public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
-                            
-                            if(newValue == Worker.State.SUCCEEDED) {
+
+                            if (newValue == Worker.State.SUCCEEDED) {
                                 cbWeeks.getItems().setAll(model.readWeeks(webEngine.getDocument()));
                                 cbWeeks.getSelectionModel().select(0);
                                 webEngine.getLoadWorker().stateProperty().removeListener(this);
-                                loadSchedule();
+                                //loadSchedule();
                             }
                         }
                     });
                     webEngine.load("https://supplierplan.htl-kaindorf.at/supp_neu/");
-                    
+
                 }
             }
         });
@@ -111,34 +111,38 @@ public class FXMLGUIController implements Initializable {
 
     private void loadSchedule() {
         Log.log("Loading schedules from https://supplierplan.htl-kaindorf.at/supp_neu/...");
-                    //DAL.download();
-                    webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
+        //DAL.download();
+        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
 
-                        @Override
-                        public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
-                            if (newValue == Worker.State.SUCCEEDED) {
-                                String mode = ((TableColumn) tvDaten.getColumns().get(0)).getText();
-                                switch (mode) {
-                                    case "Klassen":
-                                        onKlassen(null);
-                                        break;
-                                    case "Lehrer":
-                                        onLehrer(null);
-                                        break;
-                                    case "Räume":
-                                        onRaeume(null);
-                                        break;
-                                }
-                            }
-                        }
-                    });
+            @Override
+            public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+                if (newValue == Worker.State.SUCCEEDED) {
+                    String mode = ((TableColumn) tvDaten.getColumns().get(0)).getText();
+                    switch (mode) {
+                        case "Klassen":
+                            onKlassen(null);
+                            break;
+                        case "Lehrer":
+                            onLehrer(null);
+                            break;
+                        case "Räume":
+                            onRaeume(null);
+                            break;
+                    }
+                }
+            }
+        });
 
-                    //model.loadAllLessons(webEngine, getCalendarWeek());
-                    model.loadAllLessons(webEngine, cbWeeks.getValue());
+        //model.loadAllLessons(webEngine, getCalendarWeek());
+        model.loadAllLessons(webEngine, cbWeeks.getValue());
+    }
+
+    private void onWeeks(ActionEvent e) {
+        loadSchedule();
     }
     
     public void onDaten(Event event) {
-        
+
         int index = tvDaten.getSelectionModel().getSelectedIndex();
         if (index >= 0) {
             String str = tvDaten.getItems().get(index).toString();
@@ -147,19 +151,19 @@ public class FXMLGUIController implements Initializable {
 
             switch (mode) {
                 case "Klassen":
-                    Log.log("Load class schedule for "+str);
+                    Log.log("Load class schedule for " + str);
                     HTMLModel.convertToHTMLv3(wv.getEngine(), model.getClassLessons(str), "Klasse - " + str, getCalendarWeek());
                     break;
                 case "Lehrer":
-                    Log.log("Load teacher schedule for "+str);
+                    Log.log("Load teacher schedule for " + str);
                     HTMLModel.convertToHTMLv3(wv.getEngine(), model.getTeacherLessons(str), "Lehrer - " + str, getCalendarWeek());
                     break;
                 case "Räume":
-                    Log.log("Load room schedule for "+str);
+                    Log.log("Load room schedule for " + str);
                     HTMLModel.convertToHTMLv3(wv.getEngine(), model.getClassroomLessons(str), "Raum - " + str, getCalendarWeek());
                     break;
             }
-            
+
             Log.log("Schedule complete");
         }
     }
@@ -231,7 +235,7 @@ public class FXMLGUIController implements Initializable {
         Log.log("~~~~~ WuHack ~~~~~");
         Log.log(Calendar.getInstance().getTime().toString());
         Log.log("Initialize...");
-        
+
         Log.get().addListener(new ChangeListener<String>() {
 
             @Override
@@ -239,9 +243,9 @@ public class FXMLGUIController implements Initializable {
                 taConsole.setScrollTop(Double.MAX_VALUE);
             }
         });
-        
+
         taConsole.textProperty().bind(Log.get());
-        
+
         btUpdate.setOnAction(this::onUpdate);
         tvDaten.setOnMouseClicked(this::onDaten);
         tvDaten.setOnKeyReleased(this::onDaten);
@@ -250,11 +254,13 @@ public class FXMLGUIController implements Initializable {
         btLehrer.setOnAction(this::onLehrer);
         btRaeume.setOnAction(this::onRaeume);
 
+        cbWeeks.setOnAction(this::onWeeks);
+        
         btKlassen.setDisable(true);
 
         model = ScheduleModel.getInstance();
         //webEngine = wv.getEngine();
-        
+
         Log.log("Ready to operate");
     }
 }
